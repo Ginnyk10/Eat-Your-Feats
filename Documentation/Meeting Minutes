@@ -13,3 +13,14 @@ Possibly use turso for databse.
 
 Languages to use right now: HTML, C#
 
+
+GTA Meeting 10/24 12:15pm: 
+Updates: got the website going (C#, css, HTML) using Visual Studio, currently runs based on the template slides
+- integrate databse
+- title screen
+- most likely will use turso 
+
+dont need to comment template code given by visual studio
+Clarified Rubric Grading: if we get all requirements are met then we will receive full points (different from rubric)
+
+
