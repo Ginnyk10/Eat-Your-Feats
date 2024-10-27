@@ -6,11 +6,13 @@ Purpose: Establish connection between MongoDB database and project
 */
 
 //All of this code was given by MongoDB when I created the database.
-using MongoDB.Driver;
+using MongoDB.Driver; // uses mongoDB driver
 using MongoDB.Bson;
 
+//connection string 
 const string connectionUri = "mongodb+srv://21gke10:<Gk7856212727$>@eatmyfeats.p8ist.mongodb.net/?retryWrites=true&w=majority&appName=EatMyFeats";
 
+//settings to connect 
 var settings = MongoClientSettings.FromConnectionString(connectionUri);
 
 // Set the ServerApi field of the settings object to set the version of the Stable API on the client
