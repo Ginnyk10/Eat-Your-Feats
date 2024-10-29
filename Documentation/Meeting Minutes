@@ -7,7 +7,7 @@ Objectives for this week: Complete Sprint 1 Release, Sprint 2 Requirement Artifa
 2. integrate database - Ginny
 3. make game shareable via URL - Dylan
 4. title screen - Jackson
-5. sprint 2 requirement artiacts - Jackson
+sprint 2 requirement artiacts - Jackson
 
 Possibly use turso for databse. 
 
@@ -22,5 +22,28 @@ Updates: got the website going (C#, css, HTML) using Visual Studio, currently ru
 
 dont need to comment template code given by visual studio
 Clarified Rubric Grading: if we get all requirements are met then we will receive full points (different from rubric)
+
+
+10/29 Team Meeting 5pm-5:16pm via Discord Call:
+all members attended
+Next Meeting 11/5 4:30pm via Discord Call
+
+Due Date: November 10th!
+Objectives for this week: Complete Sprint 2 Requirements, Sprint 3 Requirement Artifacts, Update Requirements Stack if necessary. 
+
+5. Create an intuitive interface for the user to create a todo list with difficulty points assigned to tasks (8 points)
+6. Add a landing page if no account is signed in (5 points)
+7. Create an intuitive interface for creating account or logging into existing account (5 points) 
+8. Allow users to log out from the title screen and return to the main landing page for unregistered users (3 points)
+9. Add interface to mark tasks as completed and gain the assigned points (5 points)
+
+Sprint 3 Requirement Artifacts. 
+
+Jackson - 5. Create an intuitive interface for the user to create a todo list with difficulty points assigned to tasks 
+Ginny - 8. Allow users to log out from the title screen and return to the main landing page for unregistered users and Sprint 3 Requirement Artificats
+      - Send Huy and team report for missing GTA meeting this week (include Turso Database Screen)
+Anakha - 6. Add a landing page if no account is signed in.  Help with Sprint 3 Requirement Artifacts.
+Dylan - 9. Add interface to mark tasks as completed and gain the assigned points
+Isabel - 7. Create an intuitive interface for creating account or logging into existing account
 
 
