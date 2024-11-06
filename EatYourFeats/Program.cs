@@ -1,7 +1,14 @@
+using EatYourFeats.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+
+// Register MongoDbService with connection string
+const string connectionUri = "mongodb+srv://21gke10:<Gk7856212727$>@eatmyfeats.p8ist.mongodb.net/?retryWrites=true&w=majority&appName=EatMyFeats";
+builder.Services.AddSingleton(new MongoDBService(connectionUri));
+
 
 var app = builder.Build();
 
