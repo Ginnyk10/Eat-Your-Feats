@@ -25,7 +25,25 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Login">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Register">Register</a>
+                        </li>
                     </ul>
+
+                    <!-- Displaying user login status -->
+                    <div class="navbar-text">
+                        @if (User.Identity?.IsAuthenticated == true)
+                        {
+                            <span>Hello, @User.Identity.Name!</span>
+                        }
+                        else
+                        {
+                            <span>Not logged in</span>
+                        }
+                    </div>
                 </div>
             </div>
         </nav>
