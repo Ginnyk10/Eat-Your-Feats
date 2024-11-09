@@ -91,7 +91,7 @@ namespace EatYourFeats.Pages
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
 
                 // Redirect to the home page after successful registration and login
-                return RedirectToPage("/Index");
+                return RedirectToPage("/Dashboard");
             }
             // If validation fails, return the page with validation errors
             return Page();

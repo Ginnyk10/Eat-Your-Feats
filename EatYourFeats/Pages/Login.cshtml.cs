@@ -75,7 +75,7 @@ namespace EatYourFeats.Pages
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
 
             // Redirect to the home page after successful login
-            return RedirectToPage("/Index");
+            return RedirectToPage("/Dashboard");
         }
     }
 }

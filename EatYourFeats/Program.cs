@@ -23,6 +23,11 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 // Registers Razor Pages, enabling page rendering and MVC-style routing
 builder.Services.AddRazorPages();
 
+builder.Services.AddMvc().AddRazorPagesOptions(options =>
+{
+    options.Conventions.AddPageRoute("/Splash", "");
+});
+
 // MongoDB connection string for connecting to the database
 const string connectionUri = "mongodb+srv://jazzy:fierce@eatmyfeats.p8ist.mongodb.net/?retryWrites=true&w=majority&appName=EatMyFeats";
 
