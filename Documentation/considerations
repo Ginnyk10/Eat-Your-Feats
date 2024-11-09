@@ -1,0 +1,11 @@
+# Things to consider/to-do
+
+Splash page
+- Redirect to Dashboard page if logged in
+- Add better styling when sprites/graphics are made
+
+Login/register page
+- "Home" button should not redirect if not logged in? -> create a new page that says "You need to be logged in to access..." or smth and have buttons for login or register
+
+Dashboard page
+- Register and login buttons should/should not be accessible or minimized to somewhere else on the page instead of main header
