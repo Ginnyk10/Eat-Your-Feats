@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.RazorPages;
+﻿// 4GL for Dashboard page
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace EatYourFeats.Pages
 {

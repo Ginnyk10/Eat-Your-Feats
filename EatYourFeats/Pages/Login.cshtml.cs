@@ -4,6 +4,13 @@ Date Created: 11/7/2024
 Date Revised: 11/8/2024
 Purpose: Handles user login functionality by validating email and password input, checking if the user exists in the database, 
 and signing in the user upon successful authentication. Displays appropriate error messages for invalid login attempts.
+
+Preconditions: UserService instance must be properly initialized and injected, login form must provide non-null, non-empty values for Email and Password, User model must be correctly defined
+Postconditions: user is authenticated and signed in if the email and password are valid, user is redirected to the Dashboard page upon successful login, rror messages are displayed for invalid login attempts
+Error and exceptions: ArgumentNullException (thrown if the Email or Password properties are null)
+Side effects: N/A
+Invariants: _userService field is always initialized with a valid instance
+Other faults: N/A
 */
 
 

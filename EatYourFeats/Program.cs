@@ -1,9 +1,16 @@
 /*
-Name: Isabel Loney
+Programmers: Isabel Loney, Anakha Krishna
 Date Created: 10/23/2024
-Date Revised: 11/8/2024
+Date Revised: 11/10/2024
 Purpose: Configures and starts the web application, including services registration, authentication setup, 
 and middleware for handling HTTP requests in the EatYourFeats project.
+
+Preconditions: .NET SDK, valid MongoDB connection string, all NuGet packages (MongoDB, cookies, etc.), proper MongoDB connection and authentication setup, all required namespaces
+Postconditions: Auth services configured, Razor pages and MVC routing set up, MongoDBService and UserService registered, middleware setup, application runs and listens for requests
+Error and exceptions: MongoConfigurationException (incorrect connection string or server unreachable), InvalidOperationException (issues with auth config or middleware)
+Side effects: App fails to start or cannot connect to database, users cannot log in or access resources
+Invariants: MongoDBService and UserService must always be registered for app to function, UseAuthentication must be called before custom user identity middleware
+Other faults: N/A
 */
 
 using EatYourFeats.Services;
@@ -23,6 +30,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 // Registers Razor Pages, enabling page rendering and MVC-style routing
 builder.Services.AddRazorPages();
 
+// Set Splash page as default landing page
 builder.Services.AddMvc().AddRazorPagesOptions(options =>
 {
     options.Conventions.AddPageRoute("/Splash", "");
@@ -53,6 +61,16 @@ app.UseRouting();          // Sets up the routing middleware to define endpoints
 
 app.UseAuthentication();   // Enables authentication middleware for managing user login sessions
 app.UseAuthorization();    // Enables authorization middleware to restrict access to authenticated users
+
+app.Use(async (context, next) => // Authentication step for landing page
+{
+    if (context.User.Identity.IsAuthenticated && context.Request.Path == "/") // Conditions to check if user is already registered/login
+    {
+        context.Response.Redirect("/Dashboard"); // Redirect to dashboard
+        return;
+    }
+    await next(); // Continue
+});
 
 app.MapRazorPages();       // Maps Razor Pages endpoints to allow the application to serve pages
 

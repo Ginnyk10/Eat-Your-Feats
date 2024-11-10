@@ -1,3 +1,4 @@
+// 4GL file to handle error page
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Diagnostics;
