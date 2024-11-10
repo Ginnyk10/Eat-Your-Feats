@@ -1,5 +1,9 @@
 # EatYourFeats
 
+## Access Our Game Here!
+
+eatyourfeats.azurewebsites.net
+
 ## Setting Up MongoDB Locally
 
 1. Open the solution in Visual Studio. Then, open the terminal and navigate to the folder holding the solution (cd EatYourFeats)
