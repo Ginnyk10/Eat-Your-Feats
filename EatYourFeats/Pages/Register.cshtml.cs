@@ -3,6 +3,13 @@ Name: Isabel Loney
 Date Created: 11/7/2024
 Date Revised: 11/8/2024
 Purpose: Handles user registration by creating new accounts, validating inputs, checking for existing accounts, and signing in users automatically.
+
+Preconditions: MongoDBService and UserService instances properly initialized and injected, User model must be correctly defined
+Postconditions: new user account is created and stored in the MongoDB database if the inputs are valid and the email/username are not already in use, user is automatically signed in and redirected to the Dashboard page upon successful registration
+Error and exceptions: ArgumentNullException (Email, Username, or Password properties are null), 
+Side effects: N/A
+Invariants: _mongoDBService and _userService fields are always initialized with valid instances, OnPostAsync method always returns an IActionResult
+Other faults: N/A
 */
 
 // Required namespaces for accessing models, services, and utilities
@@ -91,7 +98,7 @@ namespace EatYourFeats.Pages
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
 
                 // Redirect to the home page after successful registration and login
-                return RedirectToPage("/Index");
+                return RedirectToPage("/Dashboard");
             }
             // If validation fails, return the page with validation errors
             return Page();

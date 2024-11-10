@@ -3,6 +3,13 @@ Name: Isabel Loney
 Date Created: 11/7/2024
 Date Revised: 11/8/2024
 Purpose: Provides data access methods for user-related operations in the MongoDB database, including creating users and retrieving them by email or username.
+
+Preconditions: MongoDB setup, Users table exists, User model defined
+Postconditions: User retrieved by email or username, new users can be inserted
+Error and exceptions: MongoDB.Driver.MongoException (thrown if there is an issue with the MongoDB connection or operations), ArgumentNullException (thrown if the email, username, or user parameter is null)
+Side effects: N/A
+Invariants: _users collection is always initialized with the "Users" collection from the MongoDB database
+Other faults: N/A
 */
 
 // Required namespaces for MongoDB functionality and accessing user models

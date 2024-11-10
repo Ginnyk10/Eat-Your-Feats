@@ -1,8 +1,15 @@
 /*
-Name: Ginny Ke
+Programmers: Ginny Ke, Anakha Krishna
 Date Created: 10/27/24
 Date Revised: 11/6/24
 Purpose: Establishes a connection to the MongoDB database and provides methods for accessing collections and verifying the connection.
+
+Preconditions: connectionUri parameter must be a valid MongoDB connection string, MongoDB server accessible and running, "EatMyFeats" database must exist
+Postconditions: MongoDB client is initialized and connected, collections can be accessed and manipulated, database connection can be verified
+Error and exceptions: MongoDB.Driver.MongoConfigurationException (thrown if the connection string is invalid), MongoDB.Driver.MongoConnectionException (thrown if the MongoDB server is unreachable)
+Side effects: N/A
+Invariants: client field is always initialized with a valid MongoClient instance, _database field is always initialized with a reference to the "EatMyFeats" database
+Other faults: N/A
 */
 
 using MongoDB.Bson;
