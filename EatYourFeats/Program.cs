@@ -45,6 +45,11 @@ builder.Services.AddSingleton(new MongoDBService(connectionUri));
 // Registers UserService as a scoped service for handling user-related operations
 builder.Services.AddScoped<UserService>();
 
+// Register TaskService and TodoService as a singleton service for handling task-related operations
+builder.Services.AddSingleton<TaskService>();
+builder.Services.AddScoped<TodoService>();
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline, specifying middleware components for request handling
