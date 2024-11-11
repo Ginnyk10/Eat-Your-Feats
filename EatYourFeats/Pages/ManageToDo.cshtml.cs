@@ -1,15 +1,16 @@
 /*
-Name: Isabel Loney
-Date Created: 11/7/2024
-Date Revised: 11/8/2024
-Purpose: Handles user login functionality by validating email and password input, checking if the user exists in the database, 
-and signing in the user upon successful authentication. Displays appropriate error messages for invalid login attempts.
+Name: Dylan Sailors
+Date Created: 11/10/2024
+Date Revised: 11/10/2024
+Purpose: Handles the todo list in the sense that it takes the list from the user from the database, then prints out the tasks with the assigned point values. Once that happens, it gives the user the option to 
+check off the tasks they want to mark as complete then prints how many points the user has.
 
-Preconditions: UserService instance must be properly initialized and injected, login form must provide non-null, non-empty values for Email and Password, User model must be correctly defined
-Postconditions: user is authenticated and signed in if the email and password are valid, user is redirected to the Dashboard page upon successful login, rror messages are displayed for invalid login attempts
-Error and exceptions: ArgumentNullException (thrown if the Email or Password properties are null)
+Preconditions: TaskService instance must be properly initialized and injected, username must provide non-null, non-empty values, Task Item model must be correctly defined
+Postconditions: tasks are displayed with their point values. there are selection boxes next to each task that can be selected then the user can mark the selected tasks as completed which removes the task from
+the database and the list while also adding the respective points from the task to the user's point total
+Error and exceptions: None (no way to bring up an error here as the code doesn't even allow an error to occur. if the mark tasks as completed button is hit with no tasks selected the page just ignores it)
 Side effects: N/A
-Invariants: _userService field is always initialized with a valid instance
+Invariants: _taskService field is always initialized with a valid instance
 Other faults: N/A
 */
 
