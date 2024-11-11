@@ -43,5 +43,19 @@ namespace EatYourFeats.Services
         // Inserts a new User document into the collection asynchronously
         public async Task CreateUserAsync(User user) =>
             await _users.InsertOneAsync(user);
+
+
+        public async Task UpdateUserPointsAsync(string username, int points)
+        {
+            var update = Builders<User>.Update.Inc(u => u.Points, points);
+            await _users.UpdateOneAsync(u => u.Username == username, update);
+        }
+
+        public async Task<int> GetUserPointsAsync(string username)
+        {
+            var user = await _users.Find(u => u.Username == username).FirstOrDefaultAsync();
+            return user?.Points ?? 0;
+        }
+
     }
 }

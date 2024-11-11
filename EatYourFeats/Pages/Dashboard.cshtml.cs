@@ -11,6 +11,7 @@
    Side Effects: Removes authentication cookie and redirects user to the Splash page. 
    Invariants: `_logger` is always initialized, `HttpContext.SignOutAsync()` is always called during logout. 
    Other Faults: N/A */
+   
 using Microsoft.AspNetCore.Mvc.ActionConstraints;
 using EatYourFeats.Services;                // Provides access to UserService for database operations
 using EatYourFeats.Utilities;               // Contains utility methods, such as PasswordHelper for password verification
