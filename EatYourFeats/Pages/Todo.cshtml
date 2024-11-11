@@ -34,10 +34,11 @@
 <a class="btn btn-primary">Confirm List</a>
 
 <h3>Task List</h3>
+<!-- creates a table for task names and points -->
 <table>
     <tr><th>Name</th><th>Point Value</th></tr>
     @if (Model.TaskList is not null) {
-        
+        <!-- adds a row for each task -->
         @foreach (var task in Model.TaskList)
         {
             <tr>
@@ -45,8 +46,8 @@
             <td>@task.Points</td>
             </tr>
         }
-    } else
-    {
+    } else {
+        <!-- if no tasks found, display that the list is empty (can probably improve this later) -->
         <tr>
         <td>No tasks found</td>
         <td>N/A</td>
