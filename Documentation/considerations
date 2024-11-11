@@ -9,3 +9,6 @@ Login/register page
 
 Dashboard page
 - Register and login buttons should/should not be accessible or minimized to somewhere else on the page instead of main header
+
+New Game page
+- Don't let a logged in player continue into the new game page to add tasks/points if they are already in a game (prompt them that they're already in a game). Just tell them to go to the Continue Game page or something.
