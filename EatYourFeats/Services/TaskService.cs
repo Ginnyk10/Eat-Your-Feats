@@ -1,14 +1,14 @@
-﻿/*
-Name: Isabel Loney
-Date Created: 11/7/2024
-Date Revised: 11/8/2024
-Purpose: Provides data access methods for user-related operations in the MongoDB database, including creating users and retrieving them by email or username.
+/*
+Name: Dylan Sailors
+Date Created: 11/10/2024
+Date Revised: 11/10/2024
+Purpose: Provides data access methods for task-related operations in the MongoDB database, including retrieving tasks by username, retrieving tasks by ID list, updating tasks, and deleting tasks by ID list.
 
-Preconditions: MongoDB setup, Users table exists, User model defined
-Postconditions: User retrieved by email or username, new users can be inserted
-Error and exceptions: MongoDB.Driver.MongoException (thrown if there is an issue with the MongoDB connection or operations), ArgumentNullException (thrown if the email, username, or user parameter is null)
+Preconditions: MongoDB setup, Tasks collection exists, TaskItem model defined.
+Postconditions: Tasks retrieved, updated, or deleted as requested based on username or task ID list.
+Error and exceptions: MongoDB.Driver.MongoException (thrown if there is an issue with MongoDB connection or operations), ArgumentNullException (thrown if task, username, or taskIds parameters are null).
 Side effects: N/A
-Invariants: _users collection is always initialized with the "Users" collection from the MongoDB database
+Invariants: _tasks collection is always initialized with the "Tasks" collection from the MongoDB database.
 Other faults: N/A
 */
 
