@@ -2,14 +2,14 @@
 Name: Isabel Loney, Jackson Wunderlich
 Date Created: 11/10/2024
 Date Revised: 11/10/2024
-Purpose: 
+Purpose: implements functionality where users can add a task to their list with a name and points, and view their task list while creating it
 
-Preconditions: 
-Postconditions: 
-Error and exceptions: 
-Side effects: 
-Invariants: 
-Other faults: 
+Preconditions: MongoDBService and TodoService instances properly initialized, Todo model correctly defined
+Postconditions: task list specific to user is retrieved from database, tasks are created when the submit task button is pressed
+Error and exceptions: ArgumentNullException can occur if name or points are null
+Side effects: N/A
+Invariants: _todoService is always a valid instance
+Other faults: N/A
 */
 
 
@@ -32,11 +32,12 @@ namespace EatYourFeats.Pages {
         [BindProperty]
         public int TaskPoints { get; set; }
 
-        // initializes UserService and TodoService
+        // initializes TodoService
         public TodoModel(TodoService todoService) {
             _todoService = todoService;
         }
 
+        // retrieves a user's tasks on GET
         public async Task OnGetAsync()
         {
             TaskList = await _todoService.GetTasksByUsernameAsync(User.Identity.Name);
@@ -63,6 +64,7 @@ namespace EatYourFeats.Pages {
             // gets tasks based on the current user's username
             TaskList = await _todoService.GetTasksByUsernameAsync(User.Identity.Name);
 
+            // return the same page to the user after adding task
             return Page();
         }
     }
