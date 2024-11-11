@@ -1,4 +1,4 @@
-﻿@page
+@page
 @model DashboardModel
 @{
     ViewData["Title"] = "Home page";
@@ -9,4 +9,8 @@
     <button>New Game</button>
     <h2></h2>
     <button>Continue</button>
+
+    <form method="post" asp-page-handler="Logout">
+        <button type="submit" class="btn btn-danger mt-3">Logout</button>
+    </form>
 </div>
