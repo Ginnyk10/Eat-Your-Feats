@@ -12,3 +12,10 @@ Dashboard page
 
 New Game page
 - Don't let a logged in player continue into the new game page to add tasks/points if they are already in a game (prompt them that they're already in a game). Just tell them to go to the Continue Game page or something.
+- If player with existing game tries to make a new game: prompt (are you sure you want to create a new game, you have a game already in progress and it will be lost?)
+  - if no- then button that says "No, return to Dashboard"
+  - if yes - wipe their existing tasks from db and create new game
+- Don't let a logged in player add more tasks to their list through the continue/new game button
+
+Continue page
+- If hit continue button when no existing game: print message saying: "u dont have a game. go create one" and then like a button to the new game screen or back to dash
