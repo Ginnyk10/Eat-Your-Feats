@@ -13,10 +13,8 @@ Other faults: N/A
 */
 
 // Required namespaces for MongoDB functionality and accessing task models
-using MongoDB.Driver;       // MongoDB driver for database interactions
 using EatYourFeats.Models;  // Task model
-using System.Collections.Generic; // Provides List<T> and other collection classes
-using System.Threading.Tasks;     // Provides Task-based asynchronous programming
+using MongoDB.Driver;       // MongoDB driver for database interactions
 
 namespace EatYourFeats.Services
 {
@@ -47,6 +45,5 @@ namespace EatYourFeats.Services
         // Deletes the task from the database
         public async Task DeleteTasksByIdsAsync(List<string> taskIds) =>
             await _tasks.DeleteManyAsync(task => taskIds.Contains(task.Id));
-
     }
 }

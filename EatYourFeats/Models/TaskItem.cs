@@ -12,5 +12,6 @@ namespace EatYourFeats.Models
         public string Name { get; set; }      // Task name
         public int Points { get; set; }       // Point value assigned to the task
         public bool IsCompleted { get; set; } // Indicates if the task is completed
+        public ObjectId GameId { get; set; }
     }
 }
