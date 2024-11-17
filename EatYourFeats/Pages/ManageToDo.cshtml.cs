@@ -30,12 +30,12 @@ namespace EatYourFeats.Pages
     public class ManageToDoModel : PageModel
     {
         // Instances of TaskService and UserService used for database operations
-        private readonly TaskService _taskService;
+        private readonly TodoService _todoService;
         private readonly UserService _userService;
 
         // Bound properties to hold the list of tasks and selected task IDs
         [BindProperty]
-        public List<TaskItem> Tasks { get; set; }    // List of tasks retrieved from the database
+        public List<Todo> Tasks { get; set; }    // List of tasks retrieved from the database
         [BindProperty]
         public List<string> SelectedTaskIds { get; set; } // List of selected task IDs
 
@@ -43,11 +43,11 @@ namespace EatYourFeats.Pages
         public int EarnedPoints { get; set; }
 
         // Constructor to initialize the TaskService and UserService instances, injected via dependency injection
-        public ManageToDoModel(TaskService taskService, UserService userService)
+        public ManageToDoModel(TodoService todoService, UserService userService)
         {
-            _taskService = taskService;
+            _todoService = todoService;
             _userService = userService;
-            Tasks = new List<TaskItem>();
+            Tasks = new List<Todo>();
             SelectedTaskIds = new List<string>();
         }
 
@@ -55,7 +55,7 @@ namespace EatYourFeats.Pages
         public async Task OnGetAsync()
         {
             var username = User.FindFirstValue(ClaimTypes.Name); // Get the logged-in user's username
-            Tasks = await _taskService.GetTasksByUsernameAsync(username);
+            Tasks = await _todoService.GetTasksByUsernameAsync(username);
             EarnedPoints = await _userService.GetUserPointsAsync(username); // Get the user's current points
         }
 
@@ -64,7 +64,7 @@ namespace EatYourFeats.Pages
         {
             if (SelectedTaskIds.Count > 0)
             {
-                var completedTasks = await _taskService.GetTasksByIdsAsync(SelectedTaskIds);
+                var completedTasks = await _todoService.GetTasksByIdsAsync(SelectedTaskIds);
                 EarnedPoints = 0;
 
                 foreach (var task in completedTasks)
@@ -74,7 +74,7 @@ namespace EatYourFeats.Pages
 
                 var username = User.FindFirstValue(ClaimTypes.Name); // Get the logged-in user's username
                 await _userService.UpdateUserPointsAsync(username, EarnedPoints); // Update the user's points
-                await _taskService.DeleteTasksByIdsAsync(SelectedTaskIds); // Delete the completed tasks
+                await _todoService.DeleteTasksByIdsAsync(SelectedTaskIds); // Delete the completed tasks
             }
 
             return RedirectToPage(); // Refresh the page to show updated tasks and points
