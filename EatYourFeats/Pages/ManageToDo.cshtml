@@ -33,10 +33,10 @@
     <button type="submit" class="btn btn-primary">Mark task(s) as completed</button>
 </form>
 
-@if (Model.EarnedPoints > 0)
+@if (Model.CurrentGame.Score > 0)
 {
     <div class="alert alert-success">
-        <p>You have earned @Model.EarnedPoints points!</p>
+        <p>You have earned @Model.CurrentGame.Score points!</p>
     </div>
 }
 

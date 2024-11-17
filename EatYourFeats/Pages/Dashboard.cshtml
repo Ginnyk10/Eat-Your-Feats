@@ -4,9 +4,9 @@
     ViewData["Title"] = "Home page";
 }
 <!--
-    Programmers: Ginny Ke
+    Programmers: Ginny Ke, Anakha Krishna
     Date created: 10/27/24
-    Date modified: 11/10/24
+    Date modified: 11/17/24
     Purpose: UI file for Dashboard Page, contains New Game, Continue, and Logout Button. Logout button redirects to Splash Page
 
     Preconditions: User must be authenticated, `DashboardModel` should handle `Logout` functionality.
@@ -18,9 +18,14 @@
 -->
 <div class="text-center">
     <h1 class="display-4">Welcome to Eat Your Feats!</h1>
-    <a class="btn btn-primary" asp-page="/Todo">New Game</a>
-    <h2></h2>
-    <a class="btn btn-primary" asp-page="/ManageToDo">Continue</a>
+
+    <form method="post" asp-page-handler="NewGame">
+        <button type="submit" class="btn btn-primary">New Game</button>
+    </form>
+
+    <form method="post" asp-page-handler="Continue">
+        <button type="submit" class="btn btn-primary">Continue</button>
+    </form>
 
     <form method="post" asp-page-handler="Logout">
         <button type="submit" class="btn btn-danger mt-3">Logout</button>

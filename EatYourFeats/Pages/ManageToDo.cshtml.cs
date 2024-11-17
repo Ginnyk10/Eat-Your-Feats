@@ -16,13 +16,11 @@ Other faults: N/A
 
 
 // Required namespaces for services, MongoDB, and Razor Pages functionality
-using EatYourFeats.Services;                // Provides access to TaskService and UserService for database operations
 using EatYourFeats.Models;                  // Task and User models
+using EatYourFeats.Services;                // Provides access to TaskService and UserService for database operations
 using Microsoft.AspNetCore.Mvc;             // Provides attributes and functionality for controllers
 using Microsoft.AspNetCore.Mvc.RazorPages;  // Required for Razor Pages support
-using System.Collections.Generic;           // Provides List<T> and other collection classes
 using System.Security.Claims;               // Provides classes for managing and handling user claims
-using System.Threading.Tasks;               // Provides Task-based asynchronous programming
 
 namespace EatYourFeats.Pages
 {
@@ -32,6 +30,7 @@ namespace EatYourFeats.Pages
         // Instances of TaskService and UserService used for database operations
         private readonly TodoService _todoService;
         private readonly UserService _userService;
+        private readonly GameService _gameService;
 
         // Bound properties to hold the list of tasks and selected task IDs
         [BindProperty]
@@ -41,14 +40,16 @@ namespace EatYourFeats.Pages
 
         // Property to hold the total earned points
         public int EarnedPoints { get; set; }
+        public Game CurrentGame { get; set; }
 
         // Constructor to initialize the TaskService and UserService instances, injected via dependency injection
-        public ManageToDoModel(TodoService todoService, UserService userService)
+        public ManageToDoModel(TodoService todoService, UserService userService, GameService gameService)
         {
             _todoService = todoService;
             _userService = userService;
             Tasks = new List<Todo>();
             SelectedTaskIds = new List<string>();
+            _gameService = gameService;
         }
 
         // Handles the initial page load; retrieves tasks from the database for the logged-in user
@@ -56,6 +57,7 @@ namespace EatYourFeats.Pages
         {
             var username = User.FindFirstValue(ClaimTypes.Name); // Get the logged-in user's username
             Tasks = await _todoService.GetTasksByUsernameAsync(username);
+            CurrentGame = await _gameService.GetGameByUsernameAsync(username);
             EarnedPoints = await _userService.GetUserPointsAsync(username); // Get the user's current points
         }
 
@@ -65,16 +67,31 @@ namespace EatYourFeats.Pages
             if (SelectedTaskIds.Count > 0)
             {
                 var completedTasks = await _todoService.GetTasksByIdsAsync(SelectedTaskIds);
-                EarnedPoints = 0;
+                int totalGamePoints = 0;
 
                 foreach (var task in completedTasks)
                 {
-                    EarnedPoints += task.Points;
+                    totalGamePoints += task.Points;
                 }
 
                 var username = User.FindFirstValue(ClaimTypes.Name); // Get the logged-in user's username
-                await _userService.UpdateUserPointsAsync(username, EarnedPoints); // Update the user's points
+                CurrentGame = await _gameService.GetGameByUsernameAsync(username);
+
+                await _gameService.UpdateGameScoreAsync(CurrentGame.Id.ToString(), totalGamePoints);
                 await _todoService.DeleteTasksByIdsAsync(SelectedTaskIds); // Delete the completed tasks
+
+                var remainingTasks = await _todoService.GetTasksByGameIdAsync(CurrentGame.Id.ToString());
+                if (remainingTasks.Count == 0)
+                {
+                    if (CurrentGame.Score > EarnedPoints)
+                    {
+                        await _userService.UpdateUserPointsAsync(username, CurrentGame.Score);
+                    }
+
+                    await _gameService.DeleteGameByIdAsync(CurrentGame.Id.ToString());
+
+                    return RedirectToPage("/FinalGameScreen");
+                }
             }
 
             return RedirectToPage(); // Refresh the page to show updated tasks and points

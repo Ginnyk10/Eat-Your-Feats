@@ -48,6 +48,7 @@ builder.Services.AddScoped<UserService>();
 // Register TaskService and TodoService as a singleton service for handling task-related operations
 builder.Services.AddScoped<TodoService>();
 
+builder.Services.AddScoped<GameService>();
 
 var app = builder.Build();
 

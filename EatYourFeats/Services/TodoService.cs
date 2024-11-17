@@ -54,5 +54,12 @@ namespace EatYourFeats.Services {
         // inserts a new task into the database
         public async Task CreateTaskAsync(Todo new_task) =>
             await _tasks.InsertOneAsync(new_task);
+
+        public async Task<List<Todo>> GetTasksByGameIdAsync(string gameId)
+        {
+            var objectId = ObjectId.Parse(gameId);
+            var filter = Builders<Todo>.Filter.Eq(t => t.GameId, objectId);
+            return await _tasks.Find(filter).ToListAsync();
+        }
     }
 }

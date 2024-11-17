@@ -11,15 +11,12 @@
    Side Effects: Removes authentication cookie and redirects user to the Splash page. 
    Invariants: `_logger` is always initialized, `HttpContext.SignOutAsync()` is always called during logout. 
    Other Faults: N/A */
-   
-using Microsoft.AspNetCore.Mvc.ActionConstraints;
-using EatYourFeats.Services;                // Provides access to UserService for database operations
-using EatYourFeats.Utilities;               // Contains utility methods, such as PasswordHelper for password verification
+
+using EatYourFeats.Services;
 using Microsoft.AspNetCore.Authentication;  // Enables authentication functionalities
 using Microsoft.AspNetCore.Authentication.Cookies;  // Defines cookie-based authentication scheme
 using Microsoft.AspNetCore.Mvc;             // Provides attributes and functionality for controllers
 using Microsoft.AspNetCore.Mvc.RazorPages;  // Required for Razor Pages support
-using System.Security.Claims;               // Provides classes for managing and handling user claims
 
 
 namespace EatYourFeats.Pages
@@ -27,10 +24,12 @@ namespace EatYourFeats.Pages
     public class DashboardModel : PageModel
     {
         private readonly ILogger<DashboardModel> _logger;
+        private readonly GameService _gameService;
 
-        public DashboardModel(ILogger<DashboardModel> logger)
+        public DashboardModel(ILogger<DashboardModel> logger, GameService gameservice)
         {
             _logger = logger;
+            _gameService = gameservice;
         }
 
         public void OnGet()
@@ -43,6 +42,32 @@ namespace EatYourFeats.Pages
             //sign user out and remove cookie
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToPage("/Splash");
+        }
+
+        public async Task<IActionResult> OnPostNewGameAsync()
+        {
+            var username = User.Identity.Name;
+            var game = await _gameService.GetGameByUsernameAsync(username);
+
+            if (game != null)
+            {
+                return RedirectToPage("/GameExists");
+            }
+
+            return RedirectToPage("/Todo");
+        }
+
+        public async Task<IActionResult> OnPostContinueAsync()
+        {
+            var username = User.Identity.Name;
+            var game = await _gameService.GetGameByUsernameAsync(username);
+
+            if (game == null)
+            {
+                return RedirectToPage("/NoGameInProgress");
+            }
+
+            return RedirectToPage("/ManageToDo");
         }
     }
 }
