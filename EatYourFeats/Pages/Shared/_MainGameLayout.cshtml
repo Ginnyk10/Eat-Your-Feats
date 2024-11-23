@@ -1,0 +1,133 @@
+﻿@* _MainGameLayout.cshtml *@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        /* Background */
+        body {
+            background-color: #413ceb; /* Cartoonish-sky blue */
+            font-family: 'Press Start 2P', cursive; /* Retro game/pixellated font */
+        }
+
+        /* Background Image */
+        .background-top {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100px; /* Adjust height as needed */
+            background: url('/images/clouds.png') repeat-x top;
+        }
+
+        /* Buttons */
+        button {
+            background-color: #e16d63; /* Coral/orange color */
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            box-shadow: 0 0 0 4px #e16d63, 0 0 0 8px #e16d63; /* Pixellated/8-bit edge */
+            font-family: 'Press Start 2P', cursive; /* Retro game/pixellated font */
+        }
+
+        /* Timer and Points */
+        #countdown-timer, #game-points {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 20px;
+            color: white;
+            text-shadow: 2px 2px #e16d63; /* Coral/orange shadow */
+        }
+
+        /* Points total */
+        #game-points {
+            top: 40px;
+        }
+
+        /* To-Do List */
+        #todo-list {
+            display: table;
+            margin: 0 auto;
+            border-collapse: collapse;
+            width: 50%;
+        }
+
+            #todo-list th, #todo-list td {
+                border: none; /* No outline */
+                padding: 10px;
+                text-align: left;
+                color: white; /* White text */
+                text-shadow: 2px 2px #e16d63; /* Coral/orange shadow */
+            }
+
+            #todo-list th {
+                background-color: #e16d63;
+                color: white;
+                text-shadow: 2px 2px #e16d63; /* Coral/orange shadow */
+            }
+
+        /* Alert */
+        .alert {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background-color: #e16d63;
+            color: white;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 0 0 4px #e16d63, 0 0 0 8px #e16d63; /* Pixellated/8-bit edge */
+            font-size: 16px;
+            text-shadow: 2px 2px #e16d63; /* Coral/orange shadow */
+        }
+
+        /* Page Title */
+        h1 {
+            color: white;
+            text-shadow: 2px 2px #e16d63; /* Coral/orange shadow */
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        /* Back to Dashboard Button */
+        #back-to-dashboard {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+        }
+
+        /* Mark Completed Button */
+        #mark-completed {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <title>@ViewData["Title"]</title>
+</head>
+<body>
+    <div class="background-top"></div>
+    <div id="countdown-timer"></div>
+    <div id="game-points">Points: @ViewData["GamePoints"]</div>
+
+    <div class="container">
+        <form method="post">
+            @RenderBody()
+        </form>
+    </div>
+
+    <a id="back-to-dashboard" href="/Dashboard">
+        <button type="button">Back to Dashboard</button>
+    </a>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

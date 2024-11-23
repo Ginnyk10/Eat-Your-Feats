@@ -1,7 +1,7 @@
 /*
-Name: Dylan Sailors
+Name: Dylan Sailors, Anakha Krishna
 Date Created: 11/10/2024
-Date Revised: 11/10/2024
+Date Revised: 11/23/2024
 Purpose: Handles the todo list in the sense that it takes the list from the user from the database, then prints out the tasks with the assigned point values. Once that happens, it gives the user the option to 
 check off the tasks they want to mark as complete then prints how many points the user has.
 
@@ -13,7 +13,6 @@ Side effects: N/A
 Invariants: _taskService field is always initialized with a valid instance
 Other faults: N/A
 */
-
 
 // Required namespaces for services, MongoDB, and Razor Pages functionality
 using EatYourFeats.Models;                  // Task and User models
@@ -41,6 +40,7 @@ namespace EatYourFeats.Pages
         // Property to hold the total earned points
         public int EarnedPoints { get; set; }
         public Game CurrentGame { get; set; }
+        public int CompletedTaskPoints { get; set; }
 
         // Constructor to initialize the TaskService and UserService instances, injected via dependency injection
         public ManageToDoModel(TodoService todoService, UserService userService, GameService gameService)
@@ -80,8 +80,10 @@ namespace EatYourFeats.Pages
                 await _gameService.UpdateGameScoreAsync(CurrentGame.Id.ToString(), totalGamePoints);
                 await _todoService.DeleteTasksByIdsAsync(SelectedTaskIds); // Delete the completed tasks
 
+                TempData["CompletedTaskPoints"] = totalGamePoints;
+
                 var remainingTasks = await _todoService.GetTasksByGameIdAsync(CurrentGame.Id.ToString());
-                if (remainingTasks.Count == 0)
+                if (remainingTasks.Count == 0 || CurrentGame.EndTime <= DateTime.UtcNow)
                 {
                     if (CurrentGame.Score > EarnedPoints)
                     {
