@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\Images\Background.png" />
+    <None Include="wwwroot\Images\clouds.png" />
+    <None Include="wwwroot\Images\Inventory.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
     <PackageReference Include="MongoDB.Driver" Version="3.0.0" />
   </ItemGroup>

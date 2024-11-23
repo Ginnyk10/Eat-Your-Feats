@@ -1,7 +1,7 @@
 /*
 Name: Isabel Loney, Jackson Wunderlich, Anakha Krishna
 Date Created: 11/10/2024
-Date Revised: 11/17/2024
+Date Revised: 11/23/2024
 Purpose: implements functionality where users can add a task to their list with a name and points, and view their task list while creating it
 
 Preconditions: MongoDBService and TodoService instances properly initialized, Todo model correctly defined
@@ -48,6 +48,7 @@ namespace EatYourFeats.Pages {
 
         // handles how tasks are added when the button is clicked
         public async Task<IActionResult> OnPostAsync() {
+
             // if name or points are empty, add an error
             if (string.IsNullOrEmpty(TaskName) || string.IsNullOrEmpty(TaskPoints.ToString())) {
                 ModelState.AddModelError(string.Empty, "Name and points cannot be empty.");
@@ -73,6 +74,9 @@ namespace EatYourFeats.Pages {
 
         public async Task<IActionResult> OnPostConfirmListAsync()
         {
+            // get the user's tasks
+            TaskList = await _todoService.GetTasksByUsernameAsync(User.Identity.Name);
+
             // create a new game
             var newGame = new Game
             {
@@ -84,9 +88,6 @@ namespace EatYourFeats.Pages {
 
             // add the game to the database
             await _gameService.CreateGameAsync(newGame);
-
-            // get the user's tasks
-            TaskList = await _todoService.GetTasksByUsernameAsync(User.Identity.Name);
 
             // update each task with the new game's ID
             foreach (var task in TaskList)

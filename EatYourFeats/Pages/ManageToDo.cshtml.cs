@@ -92,6 +92,8 @@ namespace EatYourFeats.Pages
 
                     await _gameService.DeleteGameByIdAsync(CurrentGame.Id.ToString());
 
+                    TempData["CompletedTaskPoints"] = 0;
+
                     return RedirectToPage("/FinalGameScreen");
                 }
             }
