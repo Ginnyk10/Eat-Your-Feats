@@ -1,46 +1,94 @@
 ﻿@page
 @model EatYourFeats.Pages.ManageToDoModel
 @{
-    ViewData["Title"] = "Manage To-Do List";
+    ViewData["Title"] = "Eat Your Feats!";
+    ViewData["GamePoints"] = Model.CurrentGame.Score;
+    var startTimeString = Model.CurrentGame.StartTime.ToString("yyyy-MM-ddTHH:mm:ssZ");
+    var endTimeString = Model.CurrentGame.EndTime.ToString("yyyy-MM-ddTHH:mm:ssZ");
+    var completedPoints = TempData["CompletedTaskPoints"] != null ? (int)TempData["CompletedTaskPoints"] : 0;
 }
 
-<h2>Manage To-Do List</h2>
+@{
+    Layout = "_MainGameLayout";
+}
+
+<h1>Eat Your Feats!</h1>
 
 @if (!ViewData.ModelState.IsValid)
 {
-    <div class="alert alert-danger">
+    <div class="alert">
         @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
         {
-            <p>@error.ErrorMessage</p>
+            @error.ErrorMessage
         }
     </div>
 }
 
-<form method="post" asp-page-handler="MarkCompleted">
-    <div class="form-group">
-        <label>Tasks</label>
-        <div>
-            @foreach (var task in Model.Tasks)
-            {
-                <div class="form-check">
-                    <input type="checkbox" class="form-check-input" name="SelectedTaskIds" value="@task.Id" />
-                    <label class="form-check-label">@task.Name (@task.Points points)</label>
-                </div>
-            }
-        </div>
-    </div>
+<table id="todo-list">
+    <thead>
+        <tr>
+            <th>Task</th>
+            <th>Points</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var task in Model.Tasks)
+        {
+            <tr>
+                <td>
+                    <input type="checkbox" name="SelectedTaskIds" value="@task.Id" /> @task.Name
+                </td>
+                <td>@task.Points</td>
+            </tr>
+        }
+    </tbody>
+</table>
 
-    <button type="submit" class="btn btn-primary">Mark task(s) as completed</button>
-</form>
+<button id="mark-completed" type="submit" formaction="/ManageToDo?handler=MarkCompleted">Mark task(s) as completed</button>
 
-@if (Model.EarnedPoints > 0)
+@if (completedPoints > 0)
 {
-    <div class="alert alert-success">
-        <p>You have earned @Model.EarnedPoints points!</p>
+    <div class="alert">
+        You just earned @completedPoints points!
     </div>
 }
 
 @section Scripts {
+    <script>
+        // Function to calculate the remaining time
+        function calculateRemainingTime(startTime, endTime) {
+            const now = new Date().getTime();
+            const start = new Date(startTime).getTime();
+            const end = new Date(endTime).getTime();
+            const distance = end - start - (now - start);
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            return { days, hours, minutes, seconds };
+        }
+
+        // Function to update the countdown timer display
+        function updateCountdownTimer() {
+            const startTime = '@startTimeString';
+            const endTime = '@endTimeString';
+            const remainingTime = calculateRemainingTime(startTime, endTime);
+
+            document.getElementById('countdown-timer').innerHTML =
+                `${remainingTime.days}d ${remainingTime.hours}h ${remainingTime.minutes}m ${remainingTime.seconds}s`;
+
+            if (remainingTime.days >= 0 && remainingTime.hours >= 0 && remainingTime.minutes >= 0 && remainingTime.seconds >= 0) {
+                setTimeout(updateCountdownTimer, 1000);
+            } else {
+                document.getElementById('countdown-timer').innerHTML = "Time's up!";
+            }
+        }
+
+        // Start the countdown timer
+        updateCountdownTimer();
+    </script>
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }

@@ -14,6 +14,7 @@ Other faults: N/A
 
 // Required namespaces for MongoDB functionality and accessing task models
 using MongoDB.Driver;       // MongoDB driver for database interactions
+using MongoDB.Bson;
 using EatYourFeats.Models;  // Todo model
 
 namespace EatYourFeats.Services {
@@ -33,9 +34,32 @@ namespace EatYourFeats.Services {
             var help = await _tasks.Find(filter).ToListAsync();
             return help;
         }
-        
+
+        public async Task<List<Todo>> GetTasksByIdsAsync(List<string> taskIds)
+        {
+            var objectIds = taskIds.Select(id => ObjectId.Parse(id)).ToList();
+            return await _tasks.Find(task => objectIds.Contains(task.Id)).ToListAsync();
+        }
+
+        public async Task UpdateTaskAsync(Todo task) =>
+            await _tasks.ReplaceOneAsync(t => t.Id == task.Id, task);
+
+        // Deletes the task from the database
+        public async Task DeleteTasksByIdsAsync(List<string> taskIds)
+        {
+            var objectIds = taskIds.Select(id => ObjectId.Parse(id)).ToList();
+            await _tasks.DeleteManyAsync(task => objectIds.Contains(task.Id));
+        }
+
         // inserts a new task into the database
         public async Task CreateTaskAsync(Todo new_task) =>
             await _tasks.InsertOneAsync(new_task);
+
+        public async Task<List<Todo>> GetTasksByGameIdAsync(string gameId)
+        {
+            var objectId = ObjectId.Parse(gameId);
+            var filter = Builders<Todo>.Filter.Eq(t => t.GameId, objectId);
+            return await _tasks.Find(filter).ToListAsync();
+        }
     }
 }

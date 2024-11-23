@@ -9,5 +9,6 @@ namespace EatYourFeats.Models
         public string Name { get; set; }
         public int Points { get; set; }
         public bool IsCompleted { get; set; }
+        public ObjectId GameId { get; set; }
     }
 }
