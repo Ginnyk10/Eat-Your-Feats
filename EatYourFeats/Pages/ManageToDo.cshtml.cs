@@ -1,4 +1,5 @@
 /*
+ * Prologue
 Name: Dylan Sailors, Anakha Krishna
 Date Created: 11/10/2024
 Date Revised: 11/23/2024
@@ -39,8 +40,8 @@ namespace EatYourFeats.Pages
 
         // Property to hold the total earned points
         public int EarnedPoints { get; set; }
-        public Game CurrentGame { get; set; }
-        public int CompletedTaskPoints { get; set; }
+        public Game CurrentGame { get; set; } // current game
+        public int CompletedTaskPoints { get; set; } // amount of points for tasks that were just completed
 
         // Constructor to initialize the TaskService and UserService instances, injected via dependency injection
         public ManageToDoModel(TodoService todoService, UserService userService, GameService gameService)
@@ -56,45 +57,45 @@ namespace EatYourFeats.Pages
         public async Task OnGetAsync()
         {
             var username = User.FindFirstValue(ClaimTypes.Name); // Get the logged-in user's username
-            Tasks = await _todoService.GetTasksByUsernameAsync(username);
-            CurrentGame = await _gameService.GetGameByUsernameAsync(username);
-            EarnedPoints = await _userService.GetUserPointsAsync(username); // Get the user's current points
+            Tasks = await _todoService.GetTasksByUsernameAsync(username); // get their tasks
+            CurrentGame = await _gameService.GetGameByUsernameAsync(username); // get current game
+            EarnedPoints = await _userService.GetUserPointsAsync(username); // get the user's highest score
         }
 
         // Handles the submission of completed tasks; calculates earned points and updates the database
         public async Task<IActionResult> OnPostMarkCompletedAsync()
         {
-            if (SelectedTaskIds.Count > 0)
+            if (SelectedTaskIds.Count > 0) // if selected tasks,
             {
-                var completedTasks = await _todoService.GetTasksByIdsAsync(SelectedTaskIds);
-                int totalGamePoints = 0;
+                var completedTasks = await _todoService.GetTasksByIdsAsync(SelectedTaskIds); // get tasks
+                int totalGamePoints = 0; // initialize point total
 
-                foreach (var task in completedTasks)
+                foreach (var task in completedTasks) // for each selected task
                 {
-                    totalGamePoints += task.Points;
+                    totalGamePoints += task.Points; // add pts for each task to total game score
                 }
 
                 var username = User.FindFirstValue(ClaimTypes.Name); // Get the logged-in user's username
-                CurrentGame = await _gameService.GetGameByUsernameAsync(username);
+                CurrentGame = await _gameService.GetGameByUsernameAsync(username); // get current game
 
-                await _gameService.UpdateGameScoreAsync(CurrentGame.Id.ToString(), totalGamePoints);
+                await _gameService.UpdateGameScoreAsync(CurrentGame.Id.ToString(), totalGamePoints); // update game score
                 await _todoService.DeleteTasksByIdsAsync(SelectedTaskIds); // Delete the completed tasks
 
-                TempData["CompletedTaskPoints"] = totalGamePoints;
+                TempData["CompletedTaskPoints"] = totalGamePoints; // set tempdata of points that were just completed for alert message
 
-                var remainingTasks = await _todoService.GetTasksByGameIdAsync(CurrentGame.Id.ToString());
-                if (remainingTasks.Count == 0 || CurrentGame.EndTime <= DateTime.UtcNow)
+                var remainingTasks = await _todoService.GetTasksByGameIdAsync(CurrentGame.Id.ToString()); // get remaining tasks
+                if (remainingTasks.Count == 0 || CurrentGame.EndTime <= DateTime.UtcNow) // if remaining tasks is 0 or the 3 day timer is up,
                 {
-                    if (CurrentGame.Score > EarnedPoints)
+                    if (CurrentGame.Score > EarnedPoints) // if the game's final score is higher than the user's highest score (EarnedPoints)
                     {
-                        await _userService.UpdateUserPointsAsync(username, CurrentGame.Score);
+                        await _userService.UpdateUserPointsAsync(username, CurrentGame.Score); // update the user's highest score to be the current game score
                     }
 
-                    await _gameService.DeleteGameByIdAsync(CurrentGame.Id.ToString());
+                    await _gameService.DeleteGameByIdAsync(CurrentGame.Id.ToString()); // delete the game
 
-                    TempData["CompletedTaskPoints"] = 0;
+                    TempData["CompletedTaskPoints"] = 0; // reset tempdata
 
-                    return RedirectToPage("/FinalGameScreen");
+                    return RedirectToPage("/FinalGameScreen"); // redirect to final game screen
                 }
             }
 

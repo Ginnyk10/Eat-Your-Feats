@@ -8,6 +8,6 @@ namespace EatYourFeats.Models
         public string Username { get; set; }
         public string Email { get; set; }
         public string PasswordHash { get; set; }  // Store hashed passwords for security
-        public int Points { get; set; } // Add this property
+        public int Points { get; set; } // user's highest score
     }
 }
