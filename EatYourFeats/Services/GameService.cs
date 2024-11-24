@@ -1,14 +1,15 @@
 ﻿/*
+ * Prologue
 Name: Anakha Krishna
 Date Created: 11/16/2024
 Date Revised: 11/16/2024
-Purpose: 
+Purpose: Methods for accessing Game records in MongoDB, initialize game db
 
-Preconditions:
-Postconditions:
-Error and exceptions:
-Side effects:
-Invariants:
+Preconditions: MongoDB setup, Games table exists, Games model defined
+Postconditions: Game retrieval by Username or GameId, game creation, game deletion, update game score
+Error and exceptions: MongoDB.Driver.MongoException (thrown if there is an issue with the MongoDB connection or operations), ArgumentNullException (thrown if the method parameters are null)
+Side effects: N/A
+Invariants: _games collection is always initialized with the "Games" collection from the MongoDB database
 Other faults:
 */
 using EatYourFeats.Models;

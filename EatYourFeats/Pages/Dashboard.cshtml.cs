@@ -1,5 +1,5 @@
-// 4GL for Dashboard page
-/*  Programmers: Ginny Ke
+/*  Prologue
+ *  Programmers: Ginny Ke
     Date created: 11 / 9 / 24
     Date modified: 11 / 10 / 24
     Purpose: provides necessary access to various AspNetCore libraries. Connects Logout method. Please note only the public async method was added to the template file
@@ -26,16 +26,17 @@ namespace EatYourFeats.Pages
         private readonly ILogger<DashboardModel> _logger;
         private readonly GameService _gameService;
 
-        public DashboardModel(ILogger<DashboardModel> logger, GameService gameservice)
+        public DashboardModel(ILogger<DashboardModel> logger, GameService gameservice) // initialize logger and gameservice
         {
             _logger = logger;
             _gameService = gameservice;
         }
 
-        public void OnGet()
+        public void OnGet() // auto generated
         {
 
         }
+
         //method to log user out and return to splash page
         public async Task<IActionResult> OnPostLogoutAsync()
         {
@@ -44,30 +45,32 @@ namespace EatYourFeats.Pages
             return RedirectToPage("/Splash");
         }
 
+        // action handler for clicking on "new game"
         public async Task<IActionResult> OnPostNewGameAsync()
         {
-            var username = User.Identity.Name;
-            var game = await _gameService.GetGameByUsernameAsync(username);
+            var username = User.Identity.Name; // get username
+            var game = await _gameService.GetGameByUsernameAsync(username); // check if user has any games
 
-            if (game != null)
+            if (game != null) // if user already has an existing game,
             {
-                return RedirectToPage("/GameExists");
+                return RedirectToPage("/GameExists"); // redirect to game exists already page
             }
 
-            return RedirectToPage("/Todo");
+            return RedirectToPage("/Todo"); // otherwise proceed to create new to do list
         }
 
+        // action handler for clicking on "continue"
         public async Task<IActionResult> OnPostContinueAsync()
         {
-            var username = User.Identity.Name;
-            var game = await _gameService.GetGameByUsernameAsync(username);
+            var username = User.Identity.Name; // get username
+            var game = await _gameService.GetGameByUsernameAsync(username); // check if user has any games
 
-            if (game == null)
+            if (game == null) // if a user has no game,
             {
-                return RedirectToPage("/NoGameInProgress");
+                return RedirectToPage("/NoGameInProgress"); // redirect to no game in progress
             }
 
-            return RedirectToPage("/ManageToDo");
+            return RedirectToPage("/ManageToDo"); // otherwise take them to their current game
         }
     }
 }
