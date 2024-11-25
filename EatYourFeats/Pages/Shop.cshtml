@@ -34,10 +34,11 @@
     <tbody>
         @foreach (var item in Model.Items)
         {
+            var item_url = $"/Images/placeholder.png"; // placeholder can eventually be replaced with {item.ItemName}
             <tr>
                 <td>
                     <input type="checkbox" name="SelectedItems" value="@item.ItemName" />
-                    <img src="/Images/placeholder.png" alt="placeholder"> @item.ItemName
+                    <img src="@item_url" alt="placeholder"> @item.ItemName
                 </td>
                 <td>@item.ItemPrice</td>
             </tr>
@@ -47,7 +48,7 @@
 
 <button id="buy-items" type="submit" formaction="/Shop?handler=Buy">Buy Items</button>
 
-@if (spentPoints >= 0)
+@if (spentPoints > 0)
 {
     <div class="alert">
         You have @spentPoints points left!
