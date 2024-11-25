@@ -16,3 +16,26 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.parent-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.inventory-container {
+    flex-grow: 1; 
+    overflow-y: auto;
+    min-height: 20vh; 
+    max-height: 60vh;
+    padding: 10px;
+}
+
+#item-list {
+    width: 100%;
+}
+
+#item-list img {
+    max-width: 50px;
+    height: auto;
+}
