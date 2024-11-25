@@ -1,8 +1,8 @@
 ﻿/*
  * Prologue
-Name: Anakha Krishna
+Name: Anakha Krishna, Jackson Wunderlich
 Date Created: 11/16/2024
-Date Revised: 11/16/2024
+Date Revised: 11/24/2024
 Purpose: Methods for accessing Game records in MongoDB, initialize game db
 
 Preconditions: MongoDB setup, Games table exists, Games model defined
@@ -13,8 +13,10 @@ Invariants: _games collection is always initialized with the "Games" collection 
 Other faults:
 */
 using EatYourFeats.Models;
+using Microsoft.AspNetCore.Http.Features;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using System.Threading.Tasks;
 
 namespace EatYourFeats.Services
 {
@@ -57,6 +59,48 @@ namespace EatYourFeats.Services
             var objectId = ObjectId.Parse(gameId);
             var filter = Builders<Game>.Filter.Eq(g => g.Id, objectId);
             await _games.DeleteOneAsync(filter);
+        }
+
+        public async Task<List<ShopItem>> CreateShop()
+        {
+            return await Task.Run(() =>
+            {
+                List<ShopItem> Items = new List<ShopItem>();
+
+                var water = new ShopItem
+                {
+                    ItemName = "Water",
+                    ItemPrice = 1,
+                    ItemEffect = "DoubleNext"
+                };
+                Items.Add(water);
+
+                var coupon = new ShopItem
+                {
+                    ItemName = "Coupon",
+                    ItemPrice = 1,
+                    ItemEffect = "AddTask"
+                };
+                Items.Add(coupon);
+
+                var supplement = new ShopItem
+                {
+                    ItemName = "Sketchy Catabolic Supplement",
+                    ItemPrice = 1,
+                    ItemEffect = "TripleHighest"
+                };
+                Items.Add(supplement);
+
+                var fortune_cookie = new ShopItem
+                {
+                    ItemName = "Fortune Cookie",
+                    ItemPrice = 1,
+                    ItemEffect = "Random"
+                };
+                Items.Add(fortune_cookie);
+
+                return Items;
+            });
         }
     }
 }
