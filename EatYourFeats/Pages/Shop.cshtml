@@ -47,7 +47,7 @@
 
 <button id="buy-items" type="submit" formaction="/Shop?handler=Buy">Buy Items</button>
 
-@if (spentPoints > 0)
+@if (spentPoints >= 0)
 {
     <div class="alert">
         You have @spentPoints points left!
