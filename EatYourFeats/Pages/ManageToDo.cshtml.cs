@@ -17,102 +17,100 @@ Other faults: N/A
 
 // Required namespaces for services, MongoDB, and Razor Pages functionality
 using EatYourFeats.Models;                  // Task and User models
-using EatYourFeats.Services;                // Provides access to TaskService and UserService for database operations
+using EatYourFeats.Services;                // Provides access to services for database operations
 using Microsoft.AspNetCore.Mvc;             // Provides attributes and functionality for controllers
 using Microsoft.AspNetCore.Mvc.RazorPages;  // Required for Razor Pages support
 using System.Security.Claims;               // Provides classes for managing and handling user claims
 
 namespace EatYourFeats.Pages
 {
-    // Class for managing the ToDo page and handling task operations
     public class ManageToDoModel : PageModel
     {
-        // Instances of TaskService and UserService used for database operations
         private readonly TodoService _todoService;
         private readonly UserService _userService;
         private readonly GameService _gameService;
+        private readonly InventoryService _inventoryService; // Inject InventoryService
 
-        // Bound properties to hold the list of tasks and selected task IDs
         [BindProperty]
-        public List<Todo> Tasks { get; set; }    // List of tasks retrieved from the database
+        public List<Todo> Tasks { get; set; }
         [BindProperty]
-        public List<string> SelectedTaskIds { get; set; } // List of selected task IDs
-
-        // Property to hold the total earned points
+        public List<string> SelectedTaskIds { get; set; }
         public int EarnedPoints { get; set; }
-        public Game CurrentGame { get; set; } // current game
-        public int CompletedTaskPoints { get; set; } // amount of points for tasks that were just completed
+        public Game CurrentGame { get; set; }
+        public int CompletedTaskPoints { get; set; }
+        [BindProperty]
+        public string SelectedItemFromInventory { get; set; }
 
-        // Constructor to initialize the TaskService and UserService instances, injected via dependency injection
-        public ManageToDoModel(TodoService todoService, UserService userService, GameService gameService)
+        // Constructor with InventoryService
+        public ManageToDoModel(TodoService todoService, UserService userService, GameService gameService, InventoryService inventoryService)
         {
             _todoService = todoService;
             _userService = userService;
+            _gameService = gameService;
+            _inventoryService = inventoryService; // Initialize InventoryService
             Tasks = new List<Todo>();
             SelectedTaskIds = new List<string>();
-            _gameService = gameService;
         }
 
-        [BindProperty]
-        public string SelectedItemFromInventory { get; set; } // Stores the selected inventory item
-
-        // Handles the initial page load; retrieves tasks from the database for the logged-in user
         public async Task OnGetAsync()
         {
-            var username = User.FindFirstValue(ClaimTypes.Name); // Get the logged-in user's username
-            Tasks = await _todoService.GetTasksByUsernameAsync(username); // get their tasks
-            CurrentGame = await _gameService.GetGameByUsernameAsync(username); // get current game
-            EarnedPoints = await _userService.GetUserPointsAsync(username); // get the user's highest score
-         // Check if an item has been selected from inventory
+            var username = User.FindFirstValue(ClaimTypes.Name);
+            Tasks = await _todoService.GetTasksByUsernameAsync(username);
+            CurrentGame = await _gameService.GetGameByUsernameAsync(username);
+            EarnedPoints = await _userService.GetUserPointsAsync(username);
+
             if (TempData["SelectedItem"] != null)
             {
                 SelectedItemFromInventory = TempData["SelectedItem"].ToString();
             }
         }
+
         public IActionResult OnGetOpenInventory()
         {
-            // Redirect to the Inventory page when the button is clicked
             return RedirectToPage("/Inventory");
         }
 
-        // Handles the submission of completed tasks; calculates earned points and updates the database
         public async Task<IActionResult> OnPostMarkCompletedAsync()
         {
-            if (SelectedTaskIds.Count > 0) // if selected tasks,
+            if (SelectedTaskIds.Count > 0)
             {
-                var completedTasks = await _todoService.GetTasksByIdsAsync(SelectedTaskIds); // get tasks
-                int totalGamePoints = 0; // initialize point total
+                var completedTasks = await _todoService.GetTasksByIdsAsync(SelectedTaskIds);
+                int totalGamePoints = 0;
 
-                foreach (var task in completedTasks) // for each selected task
+                foreach (var task in completedTasks)
                 {
-                    totalGamePoints += task.Points; // add pts for each task to total game score
+                    totalGamePoints += task.Points;
                 }
 
-                var username = User.FindFirstValue(ClaimTypes.Name); // Get the logged-in user's username
-                CurrentGame = await _gameService.GetGameByUsernameAsync(username); // get current game
+                var username = User.FindFirstValue(ClaimTypes.Name);
+                CurrentGame = await _gameService.GetGameByUsernameAsync(username);
 
-                await _gameService.UpdateGameScoreAsync(CurrentGame.Id.ToString(), totalGamePoints); // update game score
-                await _todoService.DeleteTasksByIdsAsync(SelectedTaskIds); // Delete the completed tasks
+                await _gameService.UpdateGameScoreAsync(CurrentGame.Id.ToString(), totalGamePoints);
+                await _todoService.DeleteTasksByIdsAsync(SelectedTaskIds);
 
-                TempData["CompletedTaskPoints"] = totalGamePoints; // set tempdata of points that were just completed for alert message
+                TempData["CompletedTaskPoints"] = totalGamePoints;
 
-                var remainingTasks = await _todoService.GetTasksByGameIdAsync(CurrentGame.Id.ToString()); // get remaining tasks
-                if (remainingTasks.Count == 0 || CurrentGame.EndTime <= DateTime.UtcNow) // if remaining tasks is 0 or the 3 day timer is up,
+                var remainingTasks = await _todoService.GetTasksByGameIdAsync(CurrentGame.Id.ToString());
+                if (remainingTasks.Count == 0 || CurrentGame.EndTime <= DateTime.UtcNow)
                 {
-                    if (CurrentGame.Score > EarnedPoints) // if the game's final score is higher than the user's highest score (EarnedPoints)
+                    // Delete all items from inventory after game ends
+                    await _inventoryService.DeleteItemByIdAsync(CurrentGame.Id.ToString());
+
+                    if (CurrentGame.Score > EarnedPoints)
                     {
-                        await _userService.UpdateUserPointsAsync(username, CurrentGame.Score); // update the user's highest score to be the current game score
+                        await _userService.UpdateUserPointsAsync(username, CurrentGame.Score);
                     }
 
-                    await _gameService.DeleteGameByIdAsync(CurrentGame.Id.ToString()); // delete the game
+                    await _gameService.DeleteGameByIdAsync(CurrentGame.Id.ToString());
 
-                    TempData["CompletedTaskPoints"] = 0; // reset tempdata
+                    TempData["CompletedTaskPoints"] = 0;
 
-                    return RedirectToPage("/FinalGameScreen"); // redirect to final game screen
+                    return RedirectToPage("/FinalGameScreen");
                 }
             }
 
-            return RedirectToPage(); // Refresh the page to show updated tasks and points
+            return RedirectToPage();
         }
     }
 }
+
