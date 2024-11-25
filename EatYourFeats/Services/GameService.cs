@@ -5,8 +5,8 @@ Date Created: 11/16/2024
 Date Revised: 11/24/2024
 Purpose: Methods for accessing Game records in MongoDB, initialize game db
 
-Preconditions: MongoDB setup, Games table exists, Games model defined
-Postconditions: Game retrieval by Username or GameId, game creation, game deletion, update game score
+Preconditions: MongoDB setup, Games table exists, Game model defined
+Postconditions: Game retrieval by Username or GameId, game creation, game deletion, update game score, shop list creation
 Error and exceptions: MongoDB.Driver.MongoException (thrown if there is an issue with the MongoDB connection or operations), ArgumentNullException (thrown if the method parameters are null)
 Side effects: N/A
 Invariants: _games collection is always initialized with the "Games" collection from the MongoDB database
@@ -61,19 +61,21 @@ namespace EatYourFeats.Services
             await _games.DeleteOneAsync(filter);
         }
 
+        // creates a list of ShopItem objects
         public async Task<List<ShopItem>> CreateShop()
         {
             return await Task.Run(() =>
             {
                 List<ShopItem> Items = new List<ShopItem>();
 
+                // creates a new ShopItem
                 var water = new ShopItem
                 {
                     ItemName = "Water",
                     ItemPrice = 1,
                     ItemEffect = "DoubleNext"
                 };
-                Items.Add(water);
+                Items.Add(water); // adds the new item to the list
 
                 var coupon = new ShopItem
                 {
