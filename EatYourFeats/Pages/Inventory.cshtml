@@ -1,5 +1,5 @@
 ﻿@page
-@model EatYourFeats.Pages.ManageToDoModel
+@model EatYourFeats.Pages.InventoryModel
 @{
     ViewData["Title"] = "Eat Your Feats!";
     ViewData["GamePoints"] = Model.CurrentGame.Score;
@@ -8,12 +8,35 @@
     var completedPoints = TempData["CompletedTaskPoints"] != null ? (int)TempData["CompletedTaskPoints"] : 0;
     var selectedItem = TempData["SelectedItem"] as string; // Get the selected item from the inventory
 }
-
 @{
-    Layout = "_MainGameLayout";
+    Layout = "_ShopLayout";
 }
-
 <h1>Eat Your Feats!</h1>
+
+<form method="post">
+    <table id="item-list">
+        <thead>
+            <tr>
+                <th>Select</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.InventoryItems)
+            {
+                var item_url = $"/Images/placeholder.png"; // placeholder can eventually be replaced with {item.ItemName}
+                <tr>
+                    <td>
+                        <input type="radio" name="SelectedItemId" value="@item.Id" />
+                        <img src="@item_url" alt="placeholder"> @item.ItemName
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <button id="buy-items" type="submit" formaction="/Inventory?handler=ConfirmSelection">Confirm Item Selection</button>
+
+</form>
 
 @if (!ViewData.ModelState.IsValid)
 {
@@ -24,43 +47,6 @@
         }
     </div>
 }
-
-<!-- Display the selected item if one was chosen -->
-@if (!string.IsNullOrEmpty(selectedItem))
-{
-    <div class="alert">
-        You selected: @selectedItem
-    </div>
-}
-
-<table id="todo-list">
-    <thead>
-        <tr>
-            <th>Task</th>
-            <th>Points</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var task in Model.Tasks)
-        {
-            <tr>
-                <td>
-                    <input type="checkbox" name="SelectedTaskIds" value="@task.Id" /> @task.Name
-                </td>
-                <td>@task.Points</td>
-            </tr>
-        }
-    </tbody>
-</table>
-
-<button id="mark-completed" type="submit" formaction="/ManageToDo?handler=MarkCompleted">Mark task(s) as completed</button>
-@if (completedPoints > 0)
-{
-    <div class="alert">
-        You just earned @completedPoints points!
-    </div>
-}
-
 @section Scripts {
     <script>
         // Function to calculate the remaining time
@@ -101,13 +87,3 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }
-
-<!--button that opens the inventory page-->
-<button type="button" onclick="window.location.href='/ManageToDo?handler=OpenInventory'">Open Inventory</button> 
-@if (!string.IsNullOrEmpty(selectedItem))
-{
-    <div class="alert">
-        You selected: @selectedItem
-    </div>
-}
-

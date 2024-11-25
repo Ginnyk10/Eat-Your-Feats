@@ -2,7 +2,7 @@
  * Prologue
 Name: Dylan Sailors, Anakha Krishna
 Date Created: 11/10/2024
-Date Revised: 11/23/2024
+Date Revised: 11/24/2024
 Purpose: Handles the todo list in the sense that it takes the list from the user from the database, then prints out the tasks with the assigned point values. Once that happens, it gives the user the option to 
 check off the tasks they want to mark as complete then prints how many points the user has.
 
@@ -53,6 +53,9 @@ namespace EatYourFeats.Pages
             _gameService = gameService;
         }
 
+        [BindProperty]
+        public string SelectedItemFromInventory { get; set; } // Stores the selected inventory item
+
         // Handles the initial page load; retrieves tasks from the database for the logged-in user
         public async Task OnGetAsync()
         {
@@ -60,6 +63,16 @@ namespace EatYourFeats.Pages
             Tasks = await _todoService.GetTasksByUsernameAsync(username); // get their tasks
             CurrentGame = await _gameService.GetGameByUsernameAsync(username); // get current game
             EarnedPoints = await _userService.GetUserPointsAsync(username); // get the user's highest score
+         // Check if an item has been selected from inventory
+            if (TempData["SelectedItem"] != null)
+            {
+                SelectedItemFromInventory = TempData["SelectedItem"].ToString();
+            }
+        }
+        public IActionResult OnGetOpenInventory()
+        {
+            // Redirect to the Inventory page when the button is clicked
+            return RedirectToPage("/Inventory");
         }
 
         // Handles the submission of completed tasks; calculates earned points and updates the database

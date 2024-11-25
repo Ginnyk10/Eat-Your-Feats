@@ -1,6 +1,6 @@
 ﻿/*
  * Prologue
-Name: Jackson Wunderlich
+Name: Jackson Wunderlich, Dylan Sailors
 Date Created: 11/24/2024
 Date Revised: 11/24/2024
 Purpose: Methods for accessing InventoryItems in MongoDB database
@@ -30,14 +30,18 @@ namespace EatYourFeats.Services
         public async Task AddInventoryItemAsync(InventoryItem item) =>
             await _inventory.InsertOneAsync(item); // adds a new InventoryItem to the database
 
-        // untested
-        public async Task<List<InventoryItem>> GetItemsByIdAsync(List<string> itemIds)
+        public async Task<List<InventoryItem>> GetItemsByIdAsync(List<string> itemIds) // gets the item by id
         {
             var objectIds = itemIds.Select(id => ObjectId.Parse(id)).ToList();
             return await _inventory.Find(item => objectIds.Contains(item.GameId)).ToListAsync();
         }
 
-        // untested
+        public async Task<InventoryItem> GetItemByItemNameAsync(string itemId) // gets the item by name
+        {
+            var objectId = ObjectId.Parse(itemId);
+            return await _inventory.Find(item => item.Id == objectId).FirstOrDefaultAsync();
+        }
+
         public async Task DeleteItemByIdAsync(string gameId)
         {
             var objectId = ObjectId.Parse(gameId);
