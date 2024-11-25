@@ -1,0 +1,97 @@
+﻿@page
+@model EatYourFeats.Pages.ShopModel
+@{
+    ViewData["Title"] = "Eat Your Feats!";
+    ViewData["GamePoints"] = Model.CurrentGame.Score;
+    var startTimeString = Model.CurrentGame.StartTime.ToString("yyyy-MM-ddTHH:mm:ssZ");
+    var endTimeString = Model.CurrentGame.EndTime.ToString("yyyy-MM-ddTHH:mm:ssZ");
+    var spentPoints = TempData["SpentPoints"] != null ? (int)TempData["SpentPoints"] : 0;
+}
+
+@{
+    Layout = "_ShopLayout";
+}
+
+<h1>Eat Your Feats!</h1>
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert">
+        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+        {
+            @error.ErrorMessage
+        }
+    </div>
+}
+
+<table id="item-list">
+    <thead>
+        <tr>
+            <th>Item</th>
+            <th>Cost</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Items)
+        {
+            var item_url = $"/Images/placeholder.png"; // placeholder can eventually be replaced with {item.ItemName}
+            <tr>
+                <td>
+                    <input type="checkbox" name="SelectedItems" value="@item.ItemName" />
+                    <img src="@item_url" alt="placeholder"> @item.ItemName
+                </td>
+                <td>@item.ItemPrice</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<button id="buy-items" type="submit" formaction="/Shop?handler=Buy">Buy Items</button>
+
+@if (spentPoints > 0)
+{
+    <div class="alert">
+        You have @spentPoints points left!
+    </div>
+}
+
+@section Scripts {
+    <script>
+        // Function to calculate the remaining time
+        function calculateRemainingTime(startTime, endTime) {
+            const now = new Date().getTime();
+            const start = new Date(startTime).getTime();
+            const end = new Date(endTime).getTime();
+            const distance = end - start - (now - start);
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            return { days, hours, minutes, seconds };
+        }
+
+        // Function to update the countdown timer display
+        function updateCountdownTimer() {
+            const startTime = '@startTimeString';
+            const endTime = '@endTimeString';
+            const remainingTime = calculateRemainingTime(startTime, endTime);
+
+            document.getElementById('countdown-timer').innerHTML =
+                `${remainingTime.days}d ${remainingTime.hours}h ${remainingTime.minutes}m ${remainingTime.seconds}s`;
+
+            if (remainingTime.days >= 0 && remainingTime.hours >= 0 && remainingTime.minutes >= 0 && remainingTime.seconds >= 0) {
+                setTimeout(updateCountdownTimer, 1000);
+            } else {
+                document.getElementById('countdown-timer').innerHTML = "Time's up!";
+            }
+        }
+
+        // Start the countdown timer
+        updateCountdownTimer();
+    </script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

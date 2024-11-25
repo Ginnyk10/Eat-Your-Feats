@@ -51,6 +51,8 @@ builder.Services.AddScoped<TodoService>();
 
 builder.Services.AddScoped<GameService>();
 
+builder.Services.AddScoped<InventoryService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline, specifying middleware components for request handling

@@ -1,4 +1,4 @@
-﻿@* _MainGameLayout.cshtml *@
+﻿@* _ShopLayout.cshtml *@
 <!DOCTYPE html>
 <html>
 <head>
@@ -63,14 +63,14 @@
         }
 
         /* To-Do List */
-        #todo-list {
+        #item-list {
             display: table;
             margin: 0 auto;
             border-collapse: collapse;
             width: 50%;
         }
 
-            #todo-list th, #todo-list td {
+            #item-list th, #item-list td {
                 border: none; /* No outline */
                 padding: 10px;
                 text-align: left;
@@ -78,7 +78,13 @@
                 text-shadow: 2px 2px #e16d63; /* Coral/orange shadow */
             }
 
-            #todo-list th {
+            #item-list img {
+                vertical-align: middle;
+                width: 10%;
+                height: auto;
+            }
+
+            #item-list th {
                 background-color: #e16d63;
                 color: white;
                 text-shadow: 2px 2px #e16d63; /* Coral/orange shadow */
@@ -107,22 +113,15 @@
             margin-top: 20px;
         }
 
-        /* Back to Dashboard Button */
-        #back-to-dashboard {
+        /* Back to Game Button */
+        #back-to-game {
             position: absolute;
             bottom: 10px;
             left: 10px;
         }
 
-        /* Shop Button */
-        #shop {
-            position: absolute;
-            bottom: 10px;
-            right: 10px;
-        }
-
-        /* Mark Completed Button */
-        #mark-completed {
+        /* Buy Items Button */
+        #buy-items {
             position: absolute;
             bottom: 10px;
             left: 50%;
@@ -144,12 +143,8 @@
         </form>
     </div>
 
-    <a id="back-to-dashboard" href="/Dashboard">
-        <button type="button">Back to Dashboard</button>
-    </a>
-
-    <a id="shop" href="/Shop">
-        <button type="button">Shop</button>
+    <a id="back-to-game" href="/ManageToDo">
+        <button type="button">Back to Game</button>
     </a>
 
     @RenderSection("Scripts", required: false)
