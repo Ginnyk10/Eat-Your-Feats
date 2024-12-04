@@ -1,6 +1,6 @@
 # EatYourFeats
 
-## [Click This To Access Our Game!](eatyourfeats1-eyaddvbhbddthmgv.canadacentral-01.azurewebsites.net)
+## [Click This To Access Our Game!](https://eatyourfeats1-eyaddvbhbddthmgv.canadacentral-01.azurewebsites.net/)
 
 ## Setting Up MongoDB Locally
 
