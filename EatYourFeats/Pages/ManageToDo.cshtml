@@ -6,7 +6,7 @@
     var startTimeString = Model.CurrentGame.StartTime.ToString("yyyy-MM-ddTHH:mm:ssZ");
     var endTimeString = Model.CurrentGame.EndTime.ToString("yyyy-MM-ddTHH:mm:ssZ");
     var completedPoints = TempData["CompletedTaskPoints"] != null ? (int)TempData["CompletedTaskPoints"] : 0;
-    var selectedItem = TempData["SelectedItem"] as string; // Get the selected item from the inventory
+    var selectedItem = Model.EquippedItem;
 }
 
 @{
@@ -22,14 +22,6 @@
         {
             @error.ErrorMessage
         }
-    </div>
-}
-
-<!-- Display the selected item if one was chosen -->
-@if (!string.IsNullOrEmpty(selectedItem))
-{
-    <div class="alert">
-        You selected: @selectedItem
     </div>
 }
 
@@ -63,6 +55,40 @@
 
 @section Scripts {
     <script>
+        // Function to check the equipped item's expiration
+        function checkEquippedItem(equippedItemName, timeEquipped) {
+            const now = new Date().getTime();
+            const equippedTime = new Date(timeEquipped).getTime();
+
+            // Check if item is expired (12 hours in milliseconds)
+            const isExpired = now - equippedTime >= 12000;// * 60 * 60 * 1000;
+
+            const alertDiv = document.querySelector('.alert');
+            if (isExpired) {
+                // Hide the alert if expired
+                if (alertDiv) alertDiv.style.display = 'none';
+            } else {
+                // Update the UI with the equipped item's name
+                if (alertDiv) {
+                    alertDiv.style.display = 'block';
+                    alertDiv.textContent = `Equipped: ${equippedItemName}`;
+                }
+            }
+
+            // Recheck every second
+            // yes this is excessive but preferable for demo purposes
+            setTimeout(() => checkEquippedItem(equippedItemName, timeEquipped), 1000);
+        }
+
+        // Data injected from server
+        const equippedItemName = '@(selectedItem?.ItemName ?? "null")';
+        const timeEquipped = '@(selectedItem?.TimeEquipped.ToString("o") ?? "")';
+
+        // Start checking equipped item expiration if there's an item
+        if (equippedItemName !== "null" && timeEquipped !== "") {
+            checkEquippedItem(equippedItemName, timeEquipped);
+        }
+
         // Function to calculate the remaining time
         function calculateRemainingTime(startTime, endTime) {
             const now = new Date().getTime();
@@ -102,12 +128,13 @@
     }
 }
 
-<!--button that opens the inventory page-->
-<button type="button" onclick="window.location.href='/ManageToDo?handler=OpenInventory'">Open Inventory</button> 
-@if (!string.IsNullOrEmpty(selectedItem))
+@if (selectedItem != null)
 {
     <div class="alert">
-        You selected: @selectedItem
+        Equipped: @selectedItem.ItemName
     </div>
 }
+
+<!--button that opens the inventory page-->
+<button type="button" onclick="window.location.href='/ManageToDo?handler=OpenInventory'">Open Inventory</button> 
 

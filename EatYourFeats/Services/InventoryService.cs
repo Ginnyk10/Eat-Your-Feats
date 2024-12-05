@@ -42,10 +42,29 @@ namespace EatYourFeats.Services
             return await _inventory.Find(item => item.Id == objectId).FirstOrDefaultAsync();
         }
 
-        public async Task DeleteItemByIdAsync(string gameId)
+        public async Task<InventoryItem> GetEquippedItemAsync(ObjectId gameId)
         {
-            var objectId = ObjectId.Parse(gameId);
-            var filter = Builders<InventoryItem>.Filter.Eq(g => g.Id, objectId);
+            return await _inventory.Find(item => item.IsEquipped && item.GameId == gameId).FirstOrDefaultAsync();
+        }
+
+        public async Task SetItemEquippedStatus(string itemId, bool equipped)
+        {
+            var objectId = ObjectId.Parse(itemId);
+            var update = Builders<InventoryItem>.Update.Set(i => i.IsEquipped, equipped);
+            await _inventory.UpdateOneAsync(i => i.Id == objectId, update);
+        }
+
+        public async Task SetItemEquippedTime(string itemId, DateTime time)
+        {
+            var objectId = ObjectId.Parse(itemId);
+            var update = Builders<InventoryItem>.Update.Set(i => i.TimeEquipped, time);
+            await _inventory.UpdateOneAsync(i => i.Id == objectId, update);
+        }
+
+        public async Task DeleteItemByIdAsync(string itemId)
+        {
+            var objectId = ObjectId.Parse(itemId);
+            var filter = Builders<InventoryItem>.Filter.Eq(i => i.Id, objectId);
             await _inventory.DeleteOneAsync(filter);
         }
     }

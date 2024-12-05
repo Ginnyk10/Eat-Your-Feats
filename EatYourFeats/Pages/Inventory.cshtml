@@ -24,13 +24,16 @@
         <tbody>
             @foreach (var item in Model.InventoryItems)
             {
-                var item_url = $"/Images/placeholder.png";  // placeholder can eventually be replaced with {item.ItemName}
-                <tr>
-                    <td>
-                        <input type="radio" name="SelectedItemId" value="@item.Id" />
-                        <img src="@item_url" alt="placeholder"> @item.ItemName
-                    </td>
-                </tr>
+                if (!item.IsEquipped) // only display items that are not currently equipped/in use
+                {
+                    var item_url = $"/Images/placeholder.png";  // placeholder can eventually be replaced with {item.ItemName}
+                    <tr>
+                        <td>
+                            <input type="radio" name="SelectedItemId" value="@item.Id" />
+                            <img src="@item_url" alt="placeholder"> @item.ItemName
+                        </td>
+                    </tr>
+                }
             }
         </tbody>
     </table>

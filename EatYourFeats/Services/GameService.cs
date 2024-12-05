@@ -86,7 +86,7 @@ namespace EatYourFeats.Services
                 var supplement = new ShopItem
                 {
                     ItemName = "Sketchy Catabolic Supplement",
-                    ItemPrice = 1,
+                    ItemPrice = 5,
                     ItemEffect = "TripleHighest"
                 };
                 Items.Add(supplement);

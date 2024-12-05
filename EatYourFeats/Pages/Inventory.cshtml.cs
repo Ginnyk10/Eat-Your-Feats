@@ -62,7 +62,14 @@ namespace EatYourFeats.Pages
                 var selectedItem = await _inventoryService.GetItemByItemNameAsync(SelectedItemId); // Fetch the item
                 if (selectedItem != null)
                 {
-                    await _inventoryService.DeleteItemByIdAsync(SelectedItemId); // Delete the selected item
+                    // if there is a previously equipped item, it is lost
+                    InventoryItem cur = await _inventoryService.GetEquippedItemAsync(CurrentGame.Id);
+                    if (cur != null)
+                    {
+                        await _inventoryService.DeleteItemByIdAsync(cur.Id.ToString());
+                    }
+                    await _inventoryService.SetItemEquippedStatus(SelectedItemId, true); // set item as equipped
+                    await _inventoryService.SetItemEquippedTime(SelectedItemId, DateTime.Now);
                     TempData["SelectedItem"] = selectedItem.ItemName; // Store the item name in TempData
                 }
 
