@@ -70,7 +70,7 @@ namespace EatYourFeats.Services
                 var water = new ShopItem
                 {
                     ItemName = "Water",
-                    ItemPrice = 1,
+                    ItemPrice = 3,
                     ItemEffect = "DoubleNext"
                 };
                 Items.Add(water); // adds the new item to the list
@@ -78,7 +78,7 @@ namespace EatYourFeats.Services
                 var coupon = new ShopItem
                 {
                     ItemName = "Coupon",
-                    ItemPrice = 1,
+                    ItemPrice = 2,
                     ItemEffect = "AddTask"
                 };
                 Items.Add(coupon);
