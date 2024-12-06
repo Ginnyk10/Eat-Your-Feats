@@ -1,8 +1,8 @@
 /*
  * Prologue
-Name: Dylan Sailors, Anakha Krishna
+Name: Dylan Sailors, Anakha Krishna, Isabel Loney
 Date Created: 11/10/2024
-Date Revised: 11/24/2024
+Date Revised: 12/6/2024
 Purpose: Handles the todo list in the sense that it takes the list from the user from the database, then prints out the tasks with the assigned point values. Once that happens, it gives the user the option to 
 check off the tasks they want to mark as complete then prints how many points the user has.
 
@@ -39,7 +39,7 @@ namespace EatYourFeats.Pages
         public Game CurrentGame { get; set; }
         public int CompletedTaskPoints { get; set; }
         [BindProperty]
-        public string SelectedItemFromInventory { get; set; }
+        public InventoryItem EquippedItem { get; set; }
 
         // Constructor with InventoryService
         public ManageToDoModel(TodoService todoService, UserService userService, GameService gameService, InventoryService inventoryService)
@@ -58,11 +58,7 @@ namespace EatYourFeats.Pages
             Tasks = await _todoService.GetTasksByUsernameAsync(username);
             CurrentGame = await _gameService.GetGameByUsernameAsync(username);
             EarnedPoints = await _userService.GetUserPointsAsync(username);
-
-            if (TempData["SelectedItem"] != null)
-            {
-                SelectedItemFromInventory = TempData["SelectedItem"].ToString();
-            }
+            EquippedItem = await _inventoryService.GetEquippedItemAsync(CurrentGame.Id);
         }
 
         public IActionResult OnGetOpenInventory()
@@ -82,8 +78,50 @@ namespace EatYourFeats.Pages
                     totalGamePoints += task.Points;
                 }
 
+
                 var username = User.FindFirstValue(ClaimTypes.Name);
                 CurrentGame = await _gameService.GetGameByUsernameAsync(username);
+                EquippedItem = await _inventoryService.GetEquippedItemAsync(CurrentGame.Id);
+
+                // Double points of highest task selected if water equipped
+                if (EquippedItem?.ItemName == "Water")
+                {
+                    var highestPointTask = completedTasks.OrderByDescending(task => task.Points).First();
+                    // Previous loop already added points once, so add again
+                    totalGamePoints += highestPointTask.Points;
+
+                    // delete equipped water from inventory
+                    await _inventoryService.DeleteItemByIdAsync(EquippedItem.Id.ToString());
+                }
+
+                // Triple Highest Point
+                if (EquippedItem?.ItemName == "Sketchy Catabolic Supplement")
+                {
+                    // check if item is Sketchy Catabolic Supplement; if so, check if expired
+                    if ((DateTime.Now.ToUniversalTime() - EquippedItem.TimeEquipped >= TimeSpan.FromHours(12)))
+                    {
+                        // if expired, remove the item
+                        await _inventoryService.DeleteItemByIdAsync(EquippedItem.Id.ToString());
+                    }
+                    else
+                    {
+                        //item not expired, use as normal
+                        var allTasks = await _todoService.GetTasksByGameIdAsync(CurrentGame.Id.ToString());
+                        var highestPoints = allTasks.OrderByDescending(task => task.Points).First().Points;
+
+                        // Previous loop already added points once, so additional points
+                        foreach (var task in completedTasks)
+                        {
+                            if (task.Points == highestPoints)
+                            {
+                                totalGamePoints += 2 * highestPoints;
+                                // delete equipped item from inventory
+                                await _inventoryService.DeleteItemByIdAsync(EquippedItem.Id.ToString());
+                                break;
+                            }
+                        }
+                    }
+                }
 
                 await _gameService.UpdateGameScoreAsync(CurrentGame.Id.ToString(), totalGamePoints);
                 await _todoService.DeleteTasksByIdsAsync(SelectedTaskIds);

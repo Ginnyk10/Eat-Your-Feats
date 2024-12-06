@@ -1,8 +1,8 @@
 ﻿/*
  * Prologue
-Name: Anakha Krishna, Jackson Wunderlich
+Name: Anakha Krishna, Jackson Wunderlich, Isabel Loney
 Date Created: 11/16/2024
-Date Revised: 11/24/2024
+Date Revised: 12/6/2024
 Purpose: Methods for accessing Game records in MongoDB, initialize game db
 
 Preconditions: MongoDB setup, Games table exists, Game model defined
@@ -70,7 +70,7 @@ namespace EatYourFeats.Services
                 var water = new ShopItem
                 {
                     ItemName = "Water",
-                    ItemPrice = 1,
+                    ItemPrice = 3,
                     ItemEffect = "DoubleNext"
                 };
                 Items.Add(water); // adds the new item to the list
@@ -78,7 +78,7 @@ namespace EatYourFeats.Services
                 var coupon = new ShopItem
                 {
                     ItemName = "Coupon",
-                    ItemPrice = 1,
+                    ItemPrice = 2,
                     ItemEffect = "AddTask"
                 };
                 Items.Add(coupon);
@@ -86,7 +86,7 @@ namespace EatYourFeats.Services
                 var supplement = new ShopItem
                 {
                     ItemName = "Sketchy Catabolic Supplement",
-                    ItemPrice = 1,
+                    ItemPrice = 5,
                     ItemEffect = "TripleHighest"
                 };
                 Items.Add(supplement);

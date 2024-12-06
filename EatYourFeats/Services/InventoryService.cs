@@ -1,8 +1,8 @@
 ﻿/*
  * Prologue
-Name: Jackson Wunderlich, Dylan Sailors
+Name: Jackson Wunderlich, Dylan Sailors, Isabel Loney
 Date Created: 11/24/2024
-Date Revised: 11/24/2024
+Date Revised: 12/5/2024
 Purpose: Methods for accessing InventoryItems in MongoDB database
 
 Preconditions: MongoDB setup, Inventory table exists, Inventory model defined
@@ -42,10 +42,29 @@ namespace EatYourFeats.Services
             return await _inventory.Find(item => item.Id == objectId).FirstOrDefaultAsync();
         }
 
-        public async Task DeleteItemByIdAsync(string gameId)
+        public async Task<InventoryItem> GetEquippedItemAsync(ObjectId gameId)
         {
-            var objectId = ObjectId.Parse(gameId);
-            var filter = Builders<InventoryItem>.Filter.Eq(g => g.Id, objectId);
+            return await _inventory.Find(item => item.IsEquipped && item.GameId == gameId).FirstOrDefaultAsync();
+        }
+
+        public async Task SetItemEquippedStatus(string itemId, bool equipped)
+        {
+            var objectId = ObjectId.Parse(itemId);
+            var update = Builders<InventoryItem>.Update.Set(i => i.IsEquipped, equipped);
+            await _inventory.UpdateOneAsync(i => i.Id == objectId, update);
+        }
+
+        public async Task SetItemEquippedTime(string itemId, DateTime time)
+        {
+            var objectId = ObjectId.Parse(itemId);
+            var update = Builders<InventoryItem>.Update.Set(i => i.TimeEquipped, time);
+            await _inventory.UpdateOneAsync(i => i.Id == objectId, update);
+        }
+
+        public async Task DeleteItemByIdAsync(string itemId)
+        {
+            var objectId = ObjectId.Parse(itemId);
+            var filter = Builders<InventoryItem>.Filter.Eq(i => i.Id, objectId);
             await _inventory.DeleteOneAsync(filter);
         }
     }

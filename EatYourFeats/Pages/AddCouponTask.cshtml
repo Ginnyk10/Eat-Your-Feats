@@ -1,0 +1,33 @@
+﻿@page
+@model EatYourFeats.Pages.AddCouponTaskModel
+@{
+    ViewData["Title"] = "Add Coupon Task";
+}
+
+<h2>Add a Task</h2>
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger">
+        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+        {
+            <p>@error.ErrorMessage</p>
+        }
+    </div>
+}
+
+<form method="post">
+    <div class="form-group">
+        <label asp-for="TaskName">Task Name</label>
+        <input asp-for="TaskName" class="form-control" />
+        <span asp-validation-for="TaskName" class="text-danger"></span>
+    </div>
+    
+    <div class="form-group">
+        <label asp-for="TaskPoints">Point Value</label>
+        <input asp-for="TaskPoints" class="form-control" />
+        <span asp-validation-for="TaskPoints" class="text-danger"></span>
+    </div>
+    
+    <button type="submit" class="btn btn-primary">Add Task</button>
+</form>
