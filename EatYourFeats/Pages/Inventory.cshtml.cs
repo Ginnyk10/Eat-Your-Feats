@@ -68,11 +68,56 @@ namespace EatYourFeats.Pages
                     {
                         await _inventoryService.DeleteItemByIdAsync(cur.Id.ToString());
                     }
-                    await _inventoryService.SetItemEquippedStatus(SelectedItemId, true); // set item as equipped
-                    await _inventoryService.SetItemEquippedTime(SelectedItemId, DateTime.Now);
-                    TempData["SelectedItem"] = selectedItem.ItemName; // Store the item name in TempData
-                }
 
+                    // The fortune cookie itself should not be "equipped" as with the other items
+                    if (selectedItem.ItemName == "Fortune Cookie")
+                    {
+                        Random random = new Random();
+                        int randomNumber = random.Next(1, 11); // Generates a number between 1 and 10
+                        string itemName;
+
+                        if (randomNumber >= 1 && randomNumber <= 4)
+                        {
+                            itemName = "Water";
+                        }
+                        else if (randomNumber >= 5 && randomNumber <= 8)
+                        {
+                            itemName = "Coupon";
+                        }
+                        else // randomNumber is 9 or 10
+                        {
+                            itemName = "Sketchy Catabolic Supplement";
+                        }
+
+                        var newInventoryItem = new InventoryItem
+                        {
+                            ItemName = itemName,
+                            GameId = CurrentGame.Id,
+                            IsEquipped = true,
+                            TimeEquipped = DateTime.Now,
+                        };
+                        await _inventoryService.DeleteItemByIdAsync(selectedItem.Id.ToString());
+                        selectedItem.ItemName = itemName;
+                        await _inventoryService.AddInventoryItemAsync(newInventoryItem);
+                    }
+                    else
+                    {
+                        await _inventoryService.SetItemEquippedStatus(SelectedItemId, true); // set item as equipped
+                        await _inventoryService.SetItemEquippedTime(SelectedItemId, DateTime.Now);
+                    }
+                    
+                    TempData["SelectedItem"] = selectedItem.ItemName; // Store the item name in TempData
+
+                    if (selectedItem.ItemName == "Coupon")
+                    {
+                        InventoryItem coupon = await _inventoryService.GetEquippedItemAsync(CurrentGame.Id);
+                        // coupon shouldn't be directly equipped but should redirect to add new task
+                        await _inventoryService.SetItemEquippedStatus(coupon.Id.ToString(), false);
+                        await _inventoryService.DeleteItemByIdAsync(coupon.Id.ToString());
+                        return RedirectToPage("/AddCouponTask");
+                    }
+                }
+                // Fallthrough case: item is equipped as normal
                 return RedirectToPage("/ManageToDo"); // Redirect back to ManageToDo page
             }
 
