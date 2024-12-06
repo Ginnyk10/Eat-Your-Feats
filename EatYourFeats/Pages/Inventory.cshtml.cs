@@ -1,8 +1,8 @@
 /*
  * Prologue
-Name: Dylan Sailors
+Name: Dylan Sailors, Isabel Loney
 Date Created: 11/24/2024
-Date Revised: 11/24/2024
+Date Revised: 12/6/2024
 Purpose: Handles the inventory where users can access the items bought from the shop
 
 Preconditions: InventoryService instance must be properly initialized and injected, username must provide non-null, non-empty values
@@ -76,6 +76,7 @@ namespace EatYourFeats.Pages
                         int randomNumber = random.Next(1, 11); // Generates a number between 1 and 10
                         string itemName;
 
+                        // random task, weighted towards the lower value items
                         if (randomNumber >= 1 && randomNumber <= 4)
                         {
                             itemName = "Water";
@@ -96,6 +97,8 @@ namespace EatYourFeats.Pages
                             IsEquipped = true,
                             TimeEquipped = DateTime.Now,
                         };
+
+                        // add the randomly chosen item
                         await _inventoryService.DeleteItemByIdAsync(selectedItem.Id.ToString());
                         selectedItem.ItemName = itemName;
                         await _inventoryService.AddInventoryItemAsync(newInventoryItem);
@@ -103,18 +106,19 @@ namespace EatYourFeats.Pages
                     else
                     {
                         await _inventoryService.SetItemEquippedStatus(SelectedItemId, true); // set item as equipped
-                        await _inventoryService.SetItemEquippedTime(SelectedItemId, DateTime.Now);
+                        await _inventoryService.SetItemEquippedTime(SelectedItemId, DateTime.Now); // set the time the item was equipped (relevant for supplement item)
                     }
                     
                     TempData["SelectedItem"] = selectedItem.ItemName; // Store the item name in TempData
 
+                    // coupon shouldn't be directly equipped but should redirect to add new task
                     if (selectedItem.ItemName == "Coupon")
                     {
                         InventoryItem coupon = await _inventoryService.GetEquippedItemAsync(CurrentGame.Id);
-                        // coupon shouldn't be directly equipped but should redirect to add new task
+                        // remove the item, as the pwoerup is immediately used upon equipping
                         await _inventoryService.SetItemEquippedStatus(coupon.Id.ToString(), false);
                         await _inventoryService.DeleteItemByIdAsync(coupon.Id.ToString());
-                        return RedirectToPage("/AddCouponTask");
+                        return RedirectToPage("/AddCouponTask"); // go to page to add new task
                     }
                 }
                 // Fallthrough case: item is equipped as normal

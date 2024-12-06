@@ -61,7 +61,7 @@
             const equippedTime = new Date(timeEquipped).getTime();
 
             // Check if item is expired (12 hours in milliseconds)
-            const isExpired = now - equippedTime >= 12000;// * 60 * 60 * 1000;
+            const isExpired = now - equippedTime >= 12 * 60 * 60 * 1000;
 
             const alertDiv = document.querySelector('.alert');
             if (isExpired) {

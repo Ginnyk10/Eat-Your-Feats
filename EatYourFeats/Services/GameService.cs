@@ -1,8 +1,8 @@
 ﻿/*
  * Prologue
-Name: Anakha Krishna, Jackson Wunderlich
+Name: Anakha Krishna, Jackson Wunderlich, Isabel Loney
 Date Created: 11/16/2024
-Date Revised: 11/24/2024
+Date Revised: 12/6/2024
 Purpose: Methods for accessing Game records in MongoDB, initialize game db
 
 Preconditions: MongoDB setup, Games table exists, Game model defined

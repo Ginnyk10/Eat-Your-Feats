@@ -1,8 +1,8 @@
 ﻿/*
  * Prologue
-Name: Jackson Wunderlich, Dylan Sailors
+Name: Jackson Wunderlich, Dylan Sailors, Isabel Loney
 Date Created: 11/24/2024
-Date Revised: 11/24/2024
+Date Revised: 12/5/2024
 Purpose: Methods for accessing InventoryItems in MongoDB database
 
 Preconditions: MongoDB setup, Inventory table exists, Inventory model defined

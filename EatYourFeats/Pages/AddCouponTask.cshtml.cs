@@ -1,12 +1,12 @@
 /*
  * Prologue
 Name: Isabel Loney, Jackson Wunderlich, Anakha Krishna
-Date Created: 11/10/2024
-Date Revised: 11/23/2024
-Purpose: implements functionality where users can add a task to their list with a name and points, and view their task list while creating it
+Date Created: 12/6/2024
+Date Revised: 12/6/2024
+Purpose: implements functionality for the coupon item where users can add a new task to their list mid-game
 
 Preconditions: MongoDBService and TodoService instances properly initialized, Todo model correctly defined
-Postconditions: task list specific to user is retrieved from database, tasks are created when the submit task button is pressed
+Postconditions: new task is created for the given game when "Add Task" is clicked
 Error and exceptions: ArgumentNullException can occur if name or points are null
 Side effects: N/A
 Invariants: _todoService is always a valid instance
@@ -47,7 +47,7 @@ namespace EatYourFeats.Pages {
             TaskList = await _todoService.GetTasksByUsernameAsync(User.Identity.Name);
         }
 
-        // handles how tasks are added when the button is clicked
+        // handles how the new task is added when the button is clicked
         public async Task<IActionResult> OnPostAsync() {
 
             // if name or points are empty, add an error
@@ -66,38 +66,7 @@ namespace EatYourFeats.Pages {
             // adds task to database
             await _todoService.CreateTaskAsync(new_task);
 
-            // gets tasks based on the current user's username
-            TaskList = await _todoService.GetTasksByUsernameAsync(User.Identity.Name);
-
-            // return the same page to the user after adding task
-            return RedirectToPage("/ManageToDo");
-        }
-
-        public async Task<IActionResult> OnPostConfirmListAsync()
-        {
-            // get the user's tasks
-            TaskList = await _todoService.GetTasksByUsernameAsync(User.Identity.Name);
-
-            // create a new game
-            var newGame = new Game
-            {
-                Username = User.Identity.Name,
-                StartTime = DateTime.UtcNow,
-                EndTime = DateTime.UtcNow.AddDays(3),
-                Score = 0
-            };
-
-            // add the game to the database
-            await _gameService.CreateGameAsync(newGame);
-
-            // update each task with the new game's ID
-            foreach (var task in TaskList)
-            {
-                task.GameId = newGame.Id;
-                await _todoService.UpdateTaskAsync(task);
-            }
-
-            // redirect to the in-progress game page
+            // return to game page once new task is added
             return RedirectToPage("/ManageToDo");
         }
     }
