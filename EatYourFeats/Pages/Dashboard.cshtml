@@ -3,8 +3,11 @@
 @{
     ViewData["Title"] = "Home page";
 }
+@{
+    Layout = "_Layout";
+}
 <!--
-    Programmers: Ginny Ke, Anakha Krishna
+    Programmers: Ginny Ke, Anakha Krishna and Dylan Sailors
     Date created: 10/27/24
     Date modified: 12/7/24
     Purpose: UI file for Dashboard Page, contains New Game, Continue, Leaderboard, and Logout Button. Logout button redirects to Splash Page
@@ -15,23 +18,24 @@
     Side Effects: Logs user out, removes authentication cookie, redirects to Splash page.
     Invariants: `Logout` form triggers `OnPostLogoutAsync()` in `DashboardModel`.
     Other Faults: N/A.
+    12/7/24 Edit: Added style support
 -->
-<div class="text-center">
+<center>
     <h1 class="display-4">Welcome to Eat Your Feats!</h1>
-
+    <br /><br />
     <form method="post" asp-page-handler="NewGame">
         <button type="submit" class="btn btn-primary">New Game</button>
     </form>
-
+    <br />
     <form method="post" asp-page-handler="Continue">
         <button type="submit" class="btn btn-primary">Continue</button>
     </form>
-
+    <br />
     <form method="post" asp-page-handler="Leaderboard">
         <button type="submit" class="btn btn-primary">Leaderboard</button>
     </form>
-
+    <br />
     <form method="post" asp-page-handler="Logout">
         <button type="submit" class="btn btn-danger mt-3">Logout</button>
     </form>
-</div>
+</center>

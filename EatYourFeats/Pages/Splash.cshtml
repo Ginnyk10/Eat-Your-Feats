@@ -1,19 +1,24 @@
 ﻿@page
 @model SplashModel
 @{
-    Layout = "_SplashLayout";
+    Layout = "_LoginRegisterLayout";
     ViewData["Title"] = "Splash Page";
 }
-<!-- 
-    Programmers: Anakha Krishna
+<h1>Welcome to Eat Your Feats</h1>
+<br /><br />
+<!--
+    Programmers: Anakha Krishna and Dylan Sailors
     Date created: 11/9/24
-    Date modified: 11/10/24
+    Date modified: 12/8/24
     Purpose: UI file for Splash page
+    12/8/24 Edit: Added style support
 -->
-<div class="text-center">
-    <h1>Welcome to Eat Your Feats</h1>
-    <p>
-        <a class="btn btn-primary" asp-page="/Login">Login</a>
-        <a class="btn btn-secondary" asp-page="/Register">Register</a>
-    </p>
-</div>
+<center>
+    <form method="get" asp-page="/Login">
+        <button type="submit" class="btn btn-primary">Login</button>
+    </form>
+    <br />
+    <form method="get" asp-page="/Register">
+        <button type="submit" class="btn btn-primary">Register</button>
+    </form>
+</center>

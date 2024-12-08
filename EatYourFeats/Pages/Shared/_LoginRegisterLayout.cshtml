@@ -1,5 +1,4 @@
-﻿@* _LeaderboardLayout.cshtml *@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
     <style>
@@ -21,6 +20,7 @@
             opacity: 75%;
             z-index: -1; /* Ensure it stays behind other elements */
         }
+
         /* Background Image Bottom */
         .background-bottom {
             position: absolute;
@@ -31,6 +31,30 @@
             background: url('/images/grass.png') repeat-x bottom;
             z-index: -1; /* Ensure it stays behind other elements */
         }
+
+        /* Alert */
+        .alert {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: #e16d63;
+            color: white;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 0 0 4px #e16d63, 0 0 0 8px #e16d63; /* Pixellated/8-bit edge */
+            font-size: 16px;
+            text-shadow: 2px 2px #e16d63; /* Coral/orange shadow */
+        }
+
+
+        /* Back to Dashboard Button */
+        #back-to-dashboard {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+        }
+
         /* Buttons */
         button {
             background-color: #e16d63; /* Coral/orange color */
@@ -47,34 +71,6 @@
             font-family: 'Press Start 2P', cursive; /* Retro game/pixellated font */
         }
 
-        /* To-Do List */
-        #user-list {
-            display: table;
-            margin: 0 auto;
-            border-collapse: collapse;
-            width: 50%;
-        }
-
-            #user-list th, #user-list td {
-                border: none; /* No outline */
-                padding: 10px;
-                text-align: left;
-                color: white; /* White text */
-                text-shadow: 2px 2px #e16d63; /* Coral/orange shadow */
-            }
-
-            #user-list img {
-                vertical-align: middle;
-                width: 10%;
-                height: auto;
-            }
-
-            #user-list th {
-                background-color: #e16d63;
-                color: white;
-                text-shadow: 2px 2px #e16d63; /* Coral/orange shadow */
-            }
-
         /* Page Title */
         h1 {
             color: white;
@@ -82,16 +78,12 @@
             text-align: center;
             margin-top: 20px;
         }
-
-        /* Return to Menu Button */
-        #return-home {
-            position: absolute;
-            bottom: 10px;
-            left: 10px;
-        }
-
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <!-- Include validation scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation/1.19.5/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
     <title>@ViewData["Title"]</title>
 </head>
 <body>
@@ -99,13 +91,11 @@
     <div class="background-top"></div>
 
     <div class="container">
-        <form method="post">
-            @RenderBody()
-        </form>
+        @RenderBody()
     </div>
 
-    <a id="return-home" href="/Dashboard">
-        <button type="button">Back to Dashboard</button>
+    <a id="back-to-dashboard" href="/Splash">
+        <button type="button">Back</button>
     </a>
 
     @RenderSection("Scripts", required: false)

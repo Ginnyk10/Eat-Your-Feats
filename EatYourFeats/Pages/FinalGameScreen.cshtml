@@ -1,8 +1,19 @@
 ﻿@page
 @model EatYourFeats.Pages.FinalGameScreenModel
 @{
-    ViewData["Title"] = "Final Game Screen";
+    ViewData["Title"] = "Game Over";
+    var remainingTime = Model.RemainingTime;
+    var finalScore = Model.FinalScore;
 }
 
-<h2>Game Over Placeholder</h2>
-<a asp-page="/Dashboard" class="btn btn-primary">Back to Dashboard</a>
+<h1>Game Over</h1>
+<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+<div>
+    <h1>Final Score: <strong>@finalScore</strong></h1>
+    <h1>Time Remaining: <strong>@remainingTime</strong></h1>
+</div>
+<center>
+<form method="post" asp-page-handler="ReturnToDashboard">
+    <button type="submit">Return to Dashboard</button>
+</form>
+</center>

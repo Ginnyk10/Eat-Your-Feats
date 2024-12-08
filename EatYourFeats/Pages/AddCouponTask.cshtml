@@ -3,7 +3,10 @@
 @{
     ViewData["Title"] = "Add Coupon Task";
 }
-
+@{
+    Layout = "_CouponLayout";
+}
+<h1>Eat Your Feats</h1>
 <h2>Add a Task</h2>
 
 @if (!ViewData.ModelState.IsValid)
@@ -22,12 +25,12 @@
         <input asp-for="TaskName" class="form-control" />
         <span asp-validation-for="TaskName" class="text-danger"></span>
     </div>
-    
+    <br />
     <div class="form-group">
         <label asp-for="TaskPoints">Point Value</label>
         <input asp-for="TaskPoints" class="form-control" />
         <span asp-validation-for="TaskPoints" class="text-danger"></span>
     </div>
-    
+    <br />
     <button type="submit" class="btn btn-primary">Add Task</button>
 </form>
