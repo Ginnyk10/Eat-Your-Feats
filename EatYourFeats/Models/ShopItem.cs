@@ -1,4 +1,4 @@
-﻿using MongoDB.Bson;
+using MongoDB.Bson;
 
 namespace EatYourFeats.Models
 {
@@ -8,5 +8,7 @@ namespace EatYourFeats.Models
         public string ItemName { get; set; }
         public int ItemPrice { get; set; }
         public string ItemEffect { get; set; }
+
+        public string ItemDescription { get; set; }
     }
 }
