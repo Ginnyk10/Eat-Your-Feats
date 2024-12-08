@@ -1,8 +1,8 @@
 ﻿/*
  * Prologue
-Name: Isabel Loney
+Name: Isabel Loney, Jackson Wunderlich
 Date Created: 11/7/2024
-Date Revised: 11/8/2024
+Date Revised: 12/7/2024
 Purpose: Provides data access methods for user-related operations in the MongoDB database, including creating users and retrieving them by email or username.
 
 Preconditions: MongoDB setup, Users table exists, User model defined
@@ -41,10 +41,17 @@ namespace EatYourFeats.Services
             return await _users.Find(user => user.Username == username).FirstOrDefaultAsync();
         }
 
+        // gets all users from the database
+        public async Task<List<User>> GetAllUsersAsync()
+        {
+            var filter = Builders<User>.Filter.Empty;
+            var user_list = await _users.Find(filter).ToListAsync();
+            return user_list;
+        }
+
         // Inserts a new User document into the collection asynchronously
         public async Task CreateUserAsync(User user) =>
             await _users.InsertOneAsync(user);
-
 
         public async Task UpdateUserPointsAsync(string username, int points)
         {

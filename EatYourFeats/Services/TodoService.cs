@@ -32,8 +32,8 @@ namespace EatYourFeats.Services {
         // gets a list of tasks from the database based on the current user's username
         public async Task<List<Todo>> GetTasksByUsernameAsync(string username) {
             var filter = Builders<Todo>.Filter.Eq(todo => todo.Username, username);
-            var help = await _tasks.Find(filter).ToListAsync();
-            return help;
+            var task_list = await _tasks.Find(filter).ToListAsync();
+            return task_list;
         }
 
         public async Task<List<Todo>> GetTasksByIdsAsync(List<string> taskIds)

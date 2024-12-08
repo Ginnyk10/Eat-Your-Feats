@@ -32,10 +32,6 @@
     <button type="submit" class="btn btn-primary">Add Task</button>
 </form>
 
-<form method="post" asp-page-handler="ConfirmList">
-    <button type="submit" class="btn btn-primary">Confirm List</button>
-</form>
-
 <h3>Task List</h3>
 <!-- creates a table for task names and points -->
 <table>
@@ -57,3 +53,7 @@
         </tr>
     }
 </table>
+
+<form method="post" asp-page-handler="ConfirmList">
+    <button type="submit" class="btn btn-primary">Confirm List</button>
+</form>

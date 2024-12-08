@@ -1,0 +1,57 @@
+﻿@page
+@model EatYourFeats.Pages.LeaderboardModel
+@{
+    ViewData["Title"] = "Eat Your Feats Leaderboard";
+}
+
+@{
+    Layout = "_LeaderboardLayout";
+}
+
+<h1>Leaderboard</h1>
+
+<table id="user-list">
+    <thead>
+        <tr>
+            <th>Player</th>
+            <th>Points</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{ var number = 1; }
+        @foreach (var user in Model.SortedUsers)
+        {
+            <tr>
+                @if (User.Identity.Name == user.Username)
+                {
+                    <td style="font-weight: bold;">@number. @user.Username</td>
+                    <td style="font-weight: bold;">@user.Points</td>
+                }
+                else
+                {
+                    <td>@number. @user.Username</td>
+                    <td>@user.Points</td>
+                }
+                
+                
+            </tr>
+            number = number + 1;
+        }
+    </tbody>
+</table>
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert">
+        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+        {
+            @error.ErrorMessage
+        }
+    </div>
+}
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

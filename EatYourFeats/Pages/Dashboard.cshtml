@@ -6,8 +6,8 @@
 <!--
     Programmers: Ginny Ke, Anakha Krishna
     Date created: 10/27/24
-    Date modified: 11/17/24
-    Purpose: UI file for Dashboard Page, contains New Game, Continue, and Logout Button. Logout button redirects to Splash Page
+    Date modified: 12/7/24
+    Purpose: UI file for Dashboard Page, contains New Game, Continue, Leaderboard, and Logout Button. Logout button redirects to Splash Page
 
     Preconditions: User must be authenticated, `DashboardModel` should handle `Logout` functionality.
     Postconditions: User is logged out and redirected to Splash page.
@@ -25,6 +25,10 @@
 
     <form method="post" asp-page-handler="Continue">
         <button type="submit" class="btn btn-primary">Continue</button>
+    </form>
+
+    <form method="post" asp-page-handler="Leaderboard">
+        <button type="submit" class="btn btn-primary">Leaderboard</button>
     </form>
 
     <form method="post" asp-page-handler="Logout">

@@ -6,7 +6,7 @@ Date Revised: 12/6/2024
 Purpose: Handles the inventory where users can access the items bought from the shop
 
 Preconditions: InventoryService instance must be properly initialized and injected, username must provide non-null, non-empty values
-Postconditions: Purchased items are displayed with their picture. there are selection boxes next to each item that can be selected then the user can confirm-select the selected items which removes the item from their inventory and applies its effects (next sprint)
+Postconditions: Purchased items are displayed with their picture. there are selection boxes next to each item that can be selected then the user can confirm-select the selected items which removes the item from their inventory and applies its effects
 Error and exceptions: If no item is selected and you try to confirm selection, it throws an error
 Side effects: N/A
 Invariants: _inventoryService and _gameService field is always initialized with a valid instance

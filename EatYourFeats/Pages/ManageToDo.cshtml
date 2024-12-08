@@ -3,6 +3,8 @@
 @{
     ViewData["Title"] = "Eat Your Feats!";
     ViewData["GamePoints"] = Model.CurrentGame.Score;
+    ViewData["ChosenChar"] = Model.CurrentGame.Character;
+    ViewData["ChosenFood"] = Model.CurrentGame.Food;
     var startTimeString = Model.CurrentGame.StartTime.ToString("yyyy-MM-ddTHH:mm:ssZ");
     var endTimeString = Model.CurrentGame.EndTime.ToString("yyyy-MM-ddTHH:mm:ssZ");
     var completedPoints = TempData["CompletedTaskPoints"] != null ? (int)TempData["CompletedTaskPoints"] : 0;
@@ -52,6 +54,25 @@
         You just earned @completedPoints points!
     </div>
 }
+
+@{
+    var char_url = $"/Images/{ViewData["ChosenChar"]}.png";
+    var food_url = $"/Images/{ViewData["ChosenFood"]}.png";
+    var dist = 29;
+}
+
+<img src="@char_url" class="character"/>
+
+@foreach (var task in Model.Tasks)
+{
+    // increments the distance for foods
+    dist = dist + 3;
+    // renders the food image at % distance
+    <img src="@food_url" class="food" style="left: @dist%"/>
+}
+
+<!--button that opens the inventory page-->
+<button type="button" onclick="window.location.href='/ManageToDo?handler=OpenInventory'">Open Inventory</button> 
 
 @section Scripts {
     <script>
@@ -134,7 +155,3 @@
         Equipped: @selectedItem.ItemName
     </div>
 }
-
-<!--button that opens the inventory page-->
-<button type="button" onclick="window.location.href='/ManageToDo?handler=OpenInventory'">Open Inventory</button> 
-

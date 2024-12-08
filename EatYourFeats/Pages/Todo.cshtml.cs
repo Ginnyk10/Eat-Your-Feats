@@ -2,7 +2,7 @@
  * Prologue
 Name: Isabel Loney, Jackson Wunderlich, Anakha Krishna
 Date Created: 11/10/2024
-Date Revised: 11/23/2024
+Date Revised: 12/7/2024
 Purpose: implements functionality where users can add a task to their list with a name and points, and view their task list while creating it
 
 Preconditions: MongoDBService and TodoService instances properly initialized, Todo model correctly defined
@@ -84,7 +84,9 @@ namespace EatYourFeats.Pages {
                 Username = User.Identity.Name,
                 StartTime = DateTime.UtcNow,
                 EndTime = DateTime.UtcNow.AddDays(3),
-                Score = 0
+                Score = 0,
+                Character = "",
+                Food = ""
             };
 
             // add the game to the database
@@ -97,8 +99,8 @@ namespace EatYourFeats.Pages {
                 await _todoService.UpdateTaskAsync(task);
             }
 
-            // redirect to the in-progress game page
-            return RedirectToPage("/ManageToDo");
+            // redirect to the character and food selection page
+            return RedirectToPage("/SelectCharFood");
         }
     }
 }

@@ -2,7 +2,7 @@
  * Prologue
 Name: Anakha Krishna, Jackson Wunderlich, Isabel Loney
 Date Created: 11/16/2024
-Date Revised: 12/6/2024
+Date Revised: 12/7/2024
 Purpose: Methods for accessing Game records in MongoDB, initialize game db
 
 Preconditions: MongoDB setup, Games table exists, Game model defined
@@ -40,6 +40,16 @@ namespace EatYourFeats.Services
         {
             var objectId = ObjectId.Parse(gameId);
             var update = Builders<Game>.Update.Inc(g => g.Score, points);
+            await _games.UpdateOneAsync(g => g.Id == objectId, update);
+        }
+
+        // updates the selected character and food for a game
+        public async Task UpdateCharFoodAsync(string gameId, string character, string food)
+        {
+            var objectId = ObjectId.Parse(gameId);
+            var update = Builders<Game>.Update
+                .Set(g => g.Character, character)
+                .Set(g => g.Food, food);
             await _games.UpdateOneAsync(g => g.Id == objectId, update);
         }
 
