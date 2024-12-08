@@ -33,8 +33,8 @@ namespace EatYourFeats.Pages
             // Calculate remaining time
             var timeLeft = currentGame.EndTime - DateTime.UtcNow;
             RemainingTime = timeLeft > TimeSpan.Zero
-                ? $"{timeLeft.Hours}h {timeLeft.Minutes}m {timeLeft.Seconds}s"
-                : "0h 0m 0s";
+                ? $"{timeLeft.Days}d {timeLeft.Hours}h {timeLeft.Minutes}m {timeLeft.Seconds}s"
+                : "0d 0h 0m 0s";
 
             FinalScore = currentGame.Score;
         }
