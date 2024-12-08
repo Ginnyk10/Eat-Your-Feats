@@ -1,6 +1,6 @@
-﻿/*
+/*
  * Prologue
-Name: Anakha Krishna, Jackson Wunderlich, Isabel Loney
+Name: Anakha Krishna, Jackson Wunderlich, Isabel Loney, Ginny Ke
 Date Created: 11/16/2024
 Date Revised: 12/7/2024
 Purpose: Methods for accessing Game records in MongoDB, initialize game db
@@ -81,7 +81,8 @@ namespace EatYourFeats.Services
                 {
                     ItemName = "Water",
                     ItemPrice = 3,
-                    ItemEffect = "DoubleNext"
+                    ItemEffect = "DoubleNext",
+                    ItemDescription = "Double the point value of your next completed task"
                 };
                 Items.Add(water); // adds the new item to the list
 
@@ -89,7 +90,8 @@ namespace EatYourFeats.Services
                 {
                     ItemName = "Coupon",
                     ItemPrice = 2,
-                    ItemEffect = "AddTask"
+                    ItemEffect = "AddTask",
+                    ItemDescription = "Add a new task to your list"
                 };
                 Items.Add(coupon);
 
@@ -97,7 +99,8 @@ namespace EatYourFeats.Services
                 {
                     ItemName = "Sketchy Catabolic Supplement",
                     ItemPrice = 5,
-                    ItemEffect = "TripleHighest"
+                    ItemEffect = "TripleHighest",
+                    ItemDescription = "Most difficult task worth triple points for 12 hours"
                 };
                 Items.Add(supplement);
 
@@ -105,7 +108,8 @@ namespace EatYourFeats.Services
                 {
                     ItemName = "Fortune Cookie",
                     ItemPrice = 1,
-                    ItemEffect = "Random"
+                    ItemEffect = "Random",
+                    ItemDescription = "Random power up"
                 };
                 Items.Add(fortune_cookie);
 
