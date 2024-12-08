@@ -1,6 +1,6 @@
-﻿<!DOCTYPE html>
-<!--Shared style for UI files using _Layout-->
-<html lang="en">
+﻿@* _LoginRegisterLayout.cshtml *@
+<!DOCTYPE html>
+<html>
 <head>
     <style>
         /* Background */
@@ -145,31 +145,16 @@
     <title>@ViewData["Title"]</title>
 </head>
 <body>
-    <header>
-        <!-- Displaying user login status -->
-        <div id="game-points">
-            @if (User.Identity?.IsAuthenticated == true)
-            {
-                <span>Hello, @User.Identity.Name!</span>
-            }
-            else
-            {
-                <span>Not logged in</span>
-            }
-        </div>
-    </header>
     <div class="background-bottom"></div>
     <div class="background-top"></div>
+
     <div class="container">
-        <main role="main" class="pb-3">
+        <form method="post">
             @RenderBody()
-        </main>
+        </form>
     </div>
 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
 
-    @await RenderSectionAsync("Scripts", required: false)
+    @RenderSection("Scripts", required: false)
 </body>
 </html>

@@ -4,7 +4,13 @@
     ViewData["Title"] = "Login";
 }
 
-<h2>Login</h2>
+@{
+    Layout = "_LoginRegisterLayout";
+}
+<h1>Eat Your Feats!</h1>
+<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+<h1>Login</h1>
+<br /><br />
 
 @if (!ViewData.ModelState.IsValid)
 {
@@ -17,19 +23,23 @@
 }
 
 <form method="post">
-    <div class="form-group">
+    <center>
+        <div class="form-group">
         <label asp-for="Email"></label>
         <input asp-for="Email" class="form-control" />
         <span asp-validation-for="Email" class="text-danger"></span>
-    </div>
-    
-    <div class="form-group">
+        </div>
+    </center>
+    <br />
+    <center>
+        <div class="form-group">
         <label asp-for="Password"></label>
         <input asp-for="Password" type="password" class="form-control" />
         <span asp-validation-for="Password" class="text-danger"></span>
-    </div>
-    
-    <button type="submit" class="btn btn-primary">Login</button>
+        </div>
+    </center>
+    <br />
+    <center><button type="submit" class="btn btn-primary">Login</button></center>
 </form>
 
 @section Scripts {

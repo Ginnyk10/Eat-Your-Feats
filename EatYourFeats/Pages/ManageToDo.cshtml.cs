@@ -131,18 +131,6 @@ namespace EatYourFeats.Pages
                 var remainingTasks = await _todoService.GetTasksByGameIdAsync(CurrentGame.Id.ToString());
                 if (remainingTasks.Count == 0 || CurrentGame.EndTime <= DateTime.UtcNow)
                 {
-                    // Delete all items from inventory after game ends
-                    await _inventoryService.DeleteItemsByGameAsync(CurrentGame.Id.ToString());
-
-                    if (CurrentGame.Score > EarnedPoints)
-                    {
-                        await _userService.UpdateUserPointsAsync(username, CurrentGame.Score);
-                    }
-
-                    await _gameService.DeleteGameByIdAsync(CurrentGame.Id.ToString());
-
-                    TempData["CompletedTaskPoints"] = 0;
-
                     return RedirectToPage("/FinalGameScreen");
                 }
             }
