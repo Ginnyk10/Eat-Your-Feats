@@ -132,7 +132,7 @@ namespace EatYourFeats.Pages
                 if (remainingTasks.Count == 0 || CurrentGame.EndTime <= DateTime.UtcNow)
                 {
                     // Delete all items from inventory after game ends
-                    await _inventoryService.DeleteItemByIdAsync(CurrentGame.Id.ToString());
+                    await _inventoryService.DeleteItemsByGameAsync(CurrentGame.Id.ToString());
 
                     if (CurrentGame.Score > EarnedPoints)
                     {

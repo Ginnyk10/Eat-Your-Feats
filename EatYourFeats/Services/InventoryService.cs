@@ -2,7 +2,7 @@
  * Prologue
 Name: Jackson Wunderlich, Dylan Sailors, Isabel Loney
 Date Created: 11/24/2024
-Date Revised: 12/5/2024
+Date Revised: 12/7/2024
 Purpose: Methods for accessing InventoryItems in MongoDB database
 
 Preconditions: MongoDB setup, Inventory table exists, Inventory model defined
@@ -66,6 +66,14 @@ namespace EatYourFeats.Services
             var objectId = ObjectId.Parse(itemId);
             var filter = Builders<InventoryItem>.Filter.Eq(i => i.Id, objectId);
             await _inventory.DeleteOneAsync(filter);
+        }
+
+        // delete all items from a given game
+        public async Task DeleteItemsByGameAsync(string gameId)
+        {
+            var objectId = ObjectId.Parse(gameId);
+            var filter = Builders<InventoryItem>.Filter.Eq(g => g.GameId, objectId);
+            await _inventory.DeleteManyAsync(filter);
         }
     }
 }
