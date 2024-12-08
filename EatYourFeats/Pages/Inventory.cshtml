@@ -1,4 +1,4 @@
-﻿@page
+@page
 @model EatYourFeats.Pages.InventoryModel
 @{
     ViewData["Title"] = "Eat Your Feats!";
@@ -26,7 +26,7 @@
             {
                 if (!item.IsEquipped) // only display items that are not currently equipped/in use
                 {
-                    var item_url = $"/Images/placeholder.png";  // placeholder can eventually be replaced with {item.ItemName}
+                    var item_url = $"/Images/{item.ItemName}.png"; // placeholder can eventually be replaced with {item.ItemName}
                     <tr>
                         <td>
                             <input type="radio" name="SelectedItemId" value="@item.Id" />
